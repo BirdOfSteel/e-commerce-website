@@ -1,0 +1,43 @@
+[
+    {
+        "src": "/phone-images/s25-plus.png",
+        "price": "£999.00",
+        "name": "Galaxy S25 Plus"
+    },
+    {
+        "src": "/S25-ultra.png",
+        "price": "£1,249.00",
+        "name": "Galaxy S25 Ultra"
+    },
+    {
+        "src": "/phone-images/pixel-9.png",
+        "price": "£799.00",
+        "name": "Google Pixel 9"
+    },
+    {
+        "src": "/phone-images/blue-S25.avif",
+        "price": "£799.00",
+        "name": "Galaxy S25"
+    },
+    {
+        "src": "/phone-images/pixel-8a.jpg",
+        "price": "£499.00",
+        "name": "Google Pixel 8a"
+    },
+    {
+        "src": "/phone-images/iphone-16-pro-gold.png",
+        "price": "£999.00",
+        "name": "iPhone 16 Pro"
+    },
+    {
+        "src": "/phone-images/pixel-8.jpg",
+        "price": "£449.00",
+        "name": "Galaxy Pixel 8"
+    },
+    {
+        "src": "/phone-images/iphone-16-black.png",
+        "price": "£799.00",
+        "name": "iPhone 16"
+    }
+]
+  
