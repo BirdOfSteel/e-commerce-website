@@ -2,10 +2,10 @@
 /* remove unused font sizes */
 
 .root {
-    background: #ffffff;
     width: 100vw;
     height: 100vh;
     font-family: "Jura", serif;
+    padding-top: 3rem;
 }
 
     .heroDesktopImage {

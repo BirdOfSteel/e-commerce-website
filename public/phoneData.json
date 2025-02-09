@@ -2,42 +2,50 @@
     {
         "src": "/phone-images/s25-plus.png",
         "price": "£999.00",
-        "name": "Galaxy S25 Plus"
+        "name": "Galaxy S25 Plus",
+        "id": "phone-s25-plus"
     },
     {
-        "src": "/S25-ultra.png",
+        "src": "/phone-images/S25-ultra.png",
         "price": "£1,249.00",
-        "name": "Galaxy S25 Ultra"
+        "name": "Galaxy S25 Ultra" ,
+        "id": "phone-s25-ultra"
     },
     {
         "src": "/phone-images/pixel-9.png",
         "price": "£799.00",
-        "name": "Google Pixel 9"
+        "name": "Google Pixel 9",
+        "id": "phone-pixel-9"
     },
     {
-        "src": "/phone-images/blue-S25.avif",
+        "src": "/phone-images/s25.png",
         "price": "£799.00",
-        "name": "Galaxy S25"
+        "name": "Galaxy S25",
+        "id": "phone-s25"
     },
     {
         "src": "/phone-images/pixel-8a.jpg",
         "price": "£499.00",
-        "name": "Google Pixel 8a"
+        "name": "Google Pixel 8a",
+        "id": "phone-pixel-8a"
     },
     {
         "src": "/phone-images/iphone-16-pro-gold.png",
         "price": "£999.00",
-        "name": "iPhone 16 Pro"
+        "name": "iPhone 16 Pro",
+        "id": "phone-iphone-16-pro"
     },
     {
         "src": "/phone-images/pixel-8.jpg",
         "price": "£449.00",
-        "name": "Galaxy Pixel 8"
+        "name": "Galaxy Pixel 8",
+        "id": "phone-pixel-8"
     },
     {
         "src": "/phone-images/iphone-16-black.png",
         "price": "£799.00",
-        "name": "iPhone 16"
+        "name": "iPhone 16",
+        "id": "phone-iphone-16"
     }
 ]
   

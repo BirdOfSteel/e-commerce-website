@@ -1,0 +1,85 @@
+import { useState, useEffect, useContext } from 'react';
+import { ShoppingBasketContext } from '../../context/shoppingBasketProvider';
+import styles from '../../styles/ProductsPage.module.css';
+
+// import useAddToShoppingBasket from '../../hooks/useAddToShoppingBasket';
+
+export default function PhoneList() {
+    const [phoneData, setPhoneData] = useState([]);
+    const { shoppingBasket, setShoppingBasket } = useContext(ShoppingBasketContext);
+
+    console.log(shoppingBasket)
+
+    // can we move this to another file?
+    function addToBasket(e) {
+        const productObject = JSON.parse(e.target.dataset.object);
+        console.log(productObject)
+
+        setShoppingBasket((prevBasket) => {
+
+            // creates array of IDs in shopping basket
+            const prevBasketIds = prevBasket.map((object) => { 
+                return object.id
+            })
+
+            // if selected product is already in the basket, maps over them all.
+            if (prevBasketIds.includes(productObject.id)) {
+
+                const updatedMap = 
+                prevBasket.map((objectInBasket) => {
+                    if (objectInBasket.id === productObject.id) { // if already in basket, add 1 to quantity
+                        return {
+                            ...objectInBasket,
+                            quantity: objectInBasket.quantity + 1
+                        }
+                    } else { // else, do not modify the object.
+                        return objectInBasket
+                    }
+                })
+
+                return updatedMap
+            } 
+            
+            // else, a new product object is added to the basket.
+            else {
+                return [...prevBasket, {
+                    id: productObject.id,
+                    name: productObject.name,
+                    price: productObject.price,
+                    img: productObject.src,
+                    quantity: 1
+                }]
+            }
+
+            
+        })
+    }
+
+    useEffect(() => {
+        fetch('/phoneData.json')
+            .then((res) => res.json())
+            .then((data) => setPhoneData(data));
+    }, []);
+
+    return (
+        phoneData.map((phoneObject, index) => (
+            <li key={index} className={styles.productListItem}>
+                <img src={phoneObject.src} alt={phoneObject.name} />
+                <div className={styles.productListItemInfo}>
+                    <div className={styles.productListInfoDivLeft}>
+                        <p>{phoneObject.price}</p>
+                        <p>{phoneObject.name}</p>
+                    </div>
+                    <div className={styles.productListInfoDivRight}>
+                        <img
+                            data-object={JSON.stringify(phoneObject)}
+                            src={'/cart-icon.png'}
+                            alt="Add to cart"
+                            onClick={(e) => addToBasket(e)}
+                        />
+                    </div>
+                </div>
+            </li>
+        ))
+    );
+}

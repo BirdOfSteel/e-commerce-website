@@ -1,5 +1,5 @@
 .header {    
-    background: #f3f3f3;
+    background: #e4e4e4;
     height: 6vh;
     width: 100%;
     display: flex;
@@ -16,8 +16,13 @@
         height: 40%;
     }
 
-    .cartIcon {
-        width: 25px;
+    .basketDiv {
         margin-left: auto;
+        width: 25px;
     }
-    
+
+        .cartIcon {
+            width: 100%;
+            margin-left: auto;
+        }
+        

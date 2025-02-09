@@ -1,0 +1,70 @@
+.pageDiv {
+    width: 100vw;
+    min-height: 100vh;
+    background: #ffffff;
+    padding-top: 10vh;
+    display: flex;
+    justify-content: center;
+}
+
+    .basketDiv {
+        width: auto;
+        height: auto;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    
+        .basketItemDiv {
+            width: 180px;
+            height: 250px;
+            border: 1px solid black;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            flex-direction: column;
+            padding: 1.5rem 0;
+            margin-bottom: 1rem;
+            box-sizing: content-box;
+        }
+
+            .basketItemImg {
+                object-fit: contain;
+                width: 100%;
+                height: 100%;
+            }
+
+            .basketItemQuantityDiv, .basketItemInfoDiv {
+                width: 70%;
+            }
+
+            .basketItemQuantityDiv {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.25rem 0;
+            }
+            
+                .quantityButton {
+                    background: #f3f3f3; 
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 5px;
+                    font-weight: bold;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    user-select: none;
+                }
+
+            .basketItemInfoDiv {
+                display: flex;
+                flex-direction: column;
+                margin-top: 0.75rem;
+            }
+
+    
+    
+    

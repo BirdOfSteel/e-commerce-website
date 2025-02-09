@@ -15,6 +15,7 @@ body {
     Droid Sans,
     Helvetica Neue,
     sans-serif;
+    background: #f3f3f3f3;
 }
 
 a {
@@ -29,4 +30,8 @@ a {
 img {
   max-width: 100%;
   height: auto;
+}
+
+p {
+  margin: 0;
 }
