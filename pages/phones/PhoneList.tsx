@@ -18,26 +18,26 @@ export default function PhoneList() {
         setShoppingBasket((prevBasket) => {
 
             // creates array of IDs in shopping basket
-            const prevBasketIds = prevBasket.map((object) => { 
+            const prevBasketIDs = prevBasket.map((object) => { 
                 return object.id
             })
 
             // if selected product is already in the basket, maps over them all.
-            if (prevBasketIds.includes(productObject.id)) {
+            if (prevBasketIDs.includes(productObject.id)) {
 
-                const updatedMap = 
-                prevBasket.map((objectInBasket) => {
-                    if (objectInBasket.id === productObject.id) { // if already in basket, add 1 to quantity
-                        return {
-                            ...objectInBasket,
-                            quantity: objectInBasket.quantity + 1
+                const updatedBasket = 
+                    prevBasket.map((objectInBasket) => {
+                        if (objectInBasket.id === productObject.id) { // if already in basket, add 1 to quantity
+                            return {
+                                ...objectInBasket,
+                                quantity: objectInBasket.quantity + 1
+                            }
+                        } else { // else, do not modify the object.
+                            return objectInBasket
                         }
-                    } else { // else, do not modify the object.
-                        return objectInBasket
-                    }
-                })
+                    })
 
-                return updatedMap
+                return updatedBasket
             } 
             
             // else, a new product object is added to the basket.

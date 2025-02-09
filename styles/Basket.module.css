@@ -45,18 +45,26 @@
                 align-items: center;
                 padding: 0.25rem 0;
             }
-            
-                .quantityButton {
-                    background: #f3f3f3; 
+                .quantityButton, .binIcon {
                     width: 30px;
                     height: 30px;
+                    cursor: pointer;
+                }
+
+                .quantityButton {
+                    background: #f3f3f3; 
                     border-radius: 5px;
                     font-weight: bold;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    cursor: pointer;
                     user-select: none;
+                }
+
+                .binIcon {
+                    background: #f3f3f3;
+                    border-radius: 5px;
+                    padding: 5px;
                 }
 
             .basketItemInfoDiv {
