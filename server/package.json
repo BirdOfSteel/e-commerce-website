@@ -1,7 +1,15 @@
 {
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
   "dependencies": {
-    "airtable": "^0.12.2",
+    "express": "^4.21.2",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2"
+    "airtable": "^0.12.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
   }
 }
