@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react';
 
-export const ShoppingBasketContext = createContext();
+export const ShoppingBasketContext = createContext(null);
 
 export function ShoppingBasketProvider({ children }) {
     const [ shoppingBasket, setShoppingBasket ] = useState([]);

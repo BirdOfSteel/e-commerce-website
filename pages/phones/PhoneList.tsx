@@ -1,6 +1,8 @@
+import { InferGetStaticPropsType, GetStaticProps } from 'next';
 import { useState, useEffect, useContext } from 'react';
 import { ShoppingBasketContext } from '../../context/shoppingBasketProvider';
 import styles from '../../styles/ProductsPage.module.css';
+import { ProductProps } from '../../types/productDataProps';
 
 // import useAddToShoppingBasket from '../../hooks/useAddToShoppingBasket';
 
@@ -54,12 +56,6 @@ export default function PhoneList() {
             
         })
     }
-
-    useEffect(() => {
-        fetch('/phoneData.json')
-            .then((res) => res.json())
-            .then((data) => setPhoneData(data));
-    }, []);
 
     return (
         phoneData.map((phoneObject, index) => (

@@ -6,8 +6,6 @@ import Layout from './Layout.tsx';
 import PhonesScrollList from '../components/PhonesScrollDiv';
 import TabletsScrollList from '../components/TabletsScrollDiv';
 
-import { ShoppingBasketProvider } from '../context/shoppingBasketProvider.tsx'
-
 export default function Home() {
   return (
       <Layout>
@@ -23,7 +21,7 @@ export default function Home() {
               The new Samsung Galaxy S25 Ultra
             </h1>
             <img 
-              src='/S25-ultra.png'
+              src='/phone-images/S25-ultra.png'
               className={styles.heroMobileImage}
               />
             <h1>From £1,249.00</h1>

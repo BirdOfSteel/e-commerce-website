@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import styles from '../../styles/Basket.module.css';
 import { ShoppingBasketContext } from '../../context/shoppingBasketProvider';
-import { error } from 'console';
 
 export default function BasketList() {
     const { shoppingBasket, setShoppingBasket} = useContext(ShoppingBasketContext);
