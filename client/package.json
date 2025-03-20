@@ -6,9 +6,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "airtable": "^0.12.2",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"

@@ -10,6 +10,12 @@ export default function PhoneList() {
     const [phoneData, setPhoneData] = useState([]);
     const { shoppingBasket, setShoppingBasket } = useContext(ShoppingBasketContext);
 
+    useEffect(() => {
+        fetch('/phoneData.json')
+            .then((res) => res.json())
+            .then((data) => setPhoneData(data));
+    }, []);
+
     console.log(shoppingBasket)
 
     // can we move this to another file?

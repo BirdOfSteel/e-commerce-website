@@ -5,6 +5,7 @@ import { ShoppingBasketContext } from '../../context/shoppingBasketProvider';
 export default function BasketList() {
     const { shoppingBasket, setShoppingBasket} = useContext(ShoppingBasketContext);
 
+    // when subtracting a newly added item, quantity breaks. Instead filter the map in changeProductQuantity and change behvaiour in returnNewQuantity. Delete removeItemFromBasket.
     function removeItemFromBasket(objectToRemove) {
         setShoppingBasket((prevBasket) => {
             const updatedBasket = 
@@ -15,12 +16,8 @@ export default function BasketList() {
     }
 
     function returnNewQuantity(objectInBasket, action) {
-        console.log(objectInBasket)
-        console.log(action)
-
         if (objectInBasket.quantity === 1 && action === 'subtract') {
             removeItemFromBasket(objectInBasket);
-            return 0;
         } else if (action === 'subtract') {
             return objectInBasket.quantity - 1;
         } else if (action === 'add') {
