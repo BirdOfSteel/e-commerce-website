@@ -12,12 +12,12 @@ export default function PhoneList() {
     const { shoppingBasket, setShoppingBasket } = useContext(ShoppingBasketContext);
 
     useEffect(() => {
-        fetch('/phoneData.json')
+        fetch('http://localhost:3001/phones')
             .then((res) => res.json())
             .then((data) => setPhoneData(data));
-            console.log(shoppingBasket)
     }, []);
-
+        
+        console.log(phoneData)
 
     // can we move this to another file?
     function addToBasket(e) {
@@ -67,7 +67,7 @@ export default function PhoneList() {
     return (
         phoneData.map((phoneObject, index) => (
             <li key={index} className={styles.productListItem}>
-                <img src={phoneObject.src} alt={phoneObject.name} />
+                <img src={phoneObject.img_src} alt={phoneObject.name} />
                 <div className={styles.productListItemInfo}>
                     <div className={styles.productListInfoDivLeft}>
                         <p>{phoneObject.price}</p>
