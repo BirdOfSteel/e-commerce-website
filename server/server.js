@@ -9,6 +9,7 @@ app.use(helmet());
 app.use(cors());
 
 app.get('/', (req, res) => {
+    console.log("API Online")
     res.send(`API is online`)
 })
 
