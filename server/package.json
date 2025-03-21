@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.mjs"
   },
   "dependencies": {
     "airtable": "^0.12.2",
