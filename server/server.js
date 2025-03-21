@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/phones', (req, res) => {
-    console.log("RECEIVED!")
+    res.send("phones accessed")
 })
 
 app.listen(port, () => {
