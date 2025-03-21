@@ -12,10 +12,6 @@ app.get('/', (req, res) => {
     res.send(`API is online`)
 })
 
-app.get('/phones', (req, res) => {
-    res.send("phones accessed")
-})
-
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 })
