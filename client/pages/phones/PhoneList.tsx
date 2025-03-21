@@ -6,6 +6,7 @@ import { ProductProps } from '../../types/productDataProps';
 
 // import useAddToShoppingBasket from '../../hooks/useAddToShoppingBasket';
 
+
 export default function PhoneList() {
     const [phoneData, setPhoneData] = useState([]);
     const { shoppingBasket, setShoppingBasket } = useContext(ShoppingBasketContext);
@@ -14,9 +15,9 @@ export default function PhoneList() {
         fetch('/phoneData.json')
             .then((res) => res.json())
             .then((data) => setPhoneData(data));
+            console.log(shoppingBasket)
     }, []);
 
-    console.log(shoppingBasket)
 
     // can we move this to another file?
     function addToBasket(e) {

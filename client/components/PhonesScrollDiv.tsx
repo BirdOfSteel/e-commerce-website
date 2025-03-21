@@ -5,9 +5,9 @@ import ScrollProductListItem from './ScrollProductListItem';
 import { ProductProps } from '../types/productDataProps';
 
 export const getStaticProps = (async () => {
-    const res = await fetch(`/.netlify/functions/getPhones.js`); 
+    const res = await fetch(`https://e-commerce-website-m9nj.onrender.com/phones`); 
     const phoneData = await res.json();
-
+    console.log(phoneData)
     return { props: { phoneData } }
 
 }) satisfies GetStaticProps<{phoneData: ProductProps[]}>;
