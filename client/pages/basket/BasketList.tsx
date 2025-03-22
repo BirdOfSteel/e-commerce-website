@@ -5,46 +5,47 @@ import { ShoppingBasketContext } from '../../context/shoppingBasketProvider';
 export default function BasketList() {
     const { shoppingBasket, setShoppingBasket} = useContext(ShoppingBasketContext);
 
-    // when subtracting a newly added item, quantity breaks. Instead filter the map in changeProductQuantity and change behvaiour in returnNewQuantity. Delete removeItemFromBasket.
-    function removeItemFromBasket(objectToRemove) {
-        setShoppingBasket((prevBasket) => {
-            const updatedBasket = 
-                prevBasket.filter((objectInPrevBasket) => objectToRemove.id != objectInPrevBasket.id)
+    function updateQuantity(objectInBasket, action:string) {
+        let newQuantity: number = null;
 
-            return updatedBasket
-        })
-    }
-
-    function returnNewQuantity(objectInBasket, action) {
-        if (objectInBasket.quantity === 1 && action === 'subtract') {
-            removeItemFromBasket(objectInBasket);
-        } else if (action === 'subtract') {
-            return objectInBasket.quantity - 1;
-        } else if (action === 'add') {
-            return objectInBasket.quantity + 1;
+        switch (action) {
+            case 'add': newQuantity = objectInBasket.quantity + 1;
+                break;
+            case 'subtract': newQuantity = objectInBasket.quantity - 1;
+                break;
+            case 'delete': newQuantity = objectInBasket.quantity = 0;
+                break;
         }
+
+        return newQuantity
     }
 
-    function changeProductQuantity(e) {
+    function updateBasket(e, prevBasket) { 
         const productObject = JSON.parse(e.target.parentElement.dataset.object);
-        const action = e.target.id;
+        const action:string = e.target.id;
 
-        setShoppingBasket((prevBasket) => {
-            const prevBasketIDs = prevBasket.map((objectInBasket) => { 
-                return objectInBasket.id
-            })
-
-            const updatedBasket = 
+        let updatedBasket = 
                 prevBasket.map((objectInBasket) => {
                     if (objectInBasket.id === productObject.id) {
                         return {
                             ...objectInBasket,
-                            quantity: returnNewQuantity(objectInBasket, action)
+                            quantity: updateQuantity(objectInBasket, action)
                         }
                     } else {
                         return objectInBasket
                     }
                 })
+            
+        updatedBasket = updatedBasket.filter((item) => {
+            return item.quantity > 0
+        })
+
+        return updatedBasket
+    }
+
+    function changeProductQuantity(e) {
+        setShoppingBasket((prevBasket) => {
+            const updatedBasket = updateBasket(e, prevBasket)
 
             return updatedBasket
         })
@@ -77,7 +78,8 @@ export default function BasketList() {
                         <img 
                             src={'/bin-icon.png'} 
                             className={styles.binIcon}
-                            onClick={() => removeItemFromBasket(basketObject)}
+                            id='delete'
+                            onClick={(e) => changeProductQuantity(e)}
                         />
                     </div>
                     <div className={styles.basketItemInfoDiv}>

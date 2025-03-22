@@ -1,13 +1,12 @@
 import { InferGetStaticPropsType, GetStaticProps } from 'next';
 import { useState, useEffect, useContext } from 'react';
-import { ShoppingBasketContext } from '../../context/shoppingBasketProvider';
-import styles from '../../styles/ProductsPage.module.css';
-import { ProductProps } from '../../types/productDataProps';
+import { ShoppingBasketContext } from '../context/shoppingBasketProvider';
+import styles from '../styles/ProductPage.module.css';
 
 // import useAddToShoppingBasket from '../../hooks/useAddToShoppingBasket';
 
 
-export default function PhoneList() {
+export default function renderProductPageListings(productData) {
     const [phoneData, setPhoneData] = useState([]);
     const { shoppingBasket, setShoppingBasket } = useContext(ShoppingBasketContext);
 

@@ -3,8 +3,6 @@ import Layout from '../Layout.tsx';
 
 import PhoneList from './PhoneList';
 
-import { ShoppingBasketProvider } from '../../context/shoppingBasketProvider.tsx';
-
 export default function phonesPage() {
     return (
         <Layout>

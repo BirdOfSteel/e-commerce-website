@@ -1,42 +1,24 @@
 import { useState, useEffect } from 'react';
 import styles from '../../styles/ProductsPage.module.css';
 import Layout from '../Layout.tsx';
+import RenderProductPageListings from '../../components/RenderProductPageListings.tsx';
 
 export default function phonesPage() {
     const [ tabletData, setTabletData ] = useState([])
 
-    useEffect(() => {
-        fetch('/tabletData.json')
+    useEffect(() => { // CHANGE THIS TO WORK TO FETCH FROM RENDER URL
+        fetch('http://localhost:3001/phones')
             .then((res) => res.json())
-            .then((data) => setTabletData(data))
-    },[])
+            .then((data) => setTabletData(data));
+    }, []);
 
     return (
-        <>
-            <Layout>
-                <div className={styles.pageDiv}>
-                    <ul>
-                        {
-                            tabletData.map((phoneObject, index) => {
-                                return (
-                                    <li className={styles.productListItem}>
-                                        <img src={phoneObject.src} />
-                                        <div className={styles.productListItemInfo}>                                        
-                                            <div className={styles.productListInfoDivLeft}>
-                                                <p>{phoneObject.price}</p>
-                                                <p>{phoneObject.name}</p>
-                                            </div>
-                                            <div className={styles.productListInfoDivRight}>
-                                                <img src={'/cart-icon.png'}/>
-                                            </div>
-                                        </div>
-                                    </li>
-                                )
-                            })
-                        }
-                    </ul>
-                </div>
-            </Layout>
-        </>
+        <Layout>
+            <div className={styles.pageDiv}>
+                <ul>
+                    <RenderProductPageListings productData={tabletData}/>
+                </ul>
+            </div>
+        </Layout>
     )
 }

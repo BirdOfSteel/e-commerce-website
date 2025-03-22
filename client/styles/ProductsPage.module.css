@@ -9,57 +9,60 @@
     justify-content: center;
 }
 
-    .pageDiv > ul {
-        margin: 0;
-        padding: 0;
-        list-style-type: none;
+.pageDiv > ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    gap: 1rem;        
+    display: grid;
+    justify-items: center;
+    width: 100%;
+    padding: 0 15%;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+    .productListItem { 
+        width: 100%;
+        box-sizing: border-box;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 1em;
+        background: #ffffff;
     }
 
-        .productListItem {
-            width: 200px;
-            height: 300px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border: 1px solid black;
-            border-radius: 5px;
-            padding: 1em;
-            background: #ffffff;
+        .productListItem > img {
+            width: 100%;
+            object-fit: contain;
+            margin: auto 0;
         }
 
-            .productListItem:not(:last-child) {
-                margin-bottom: 1rem;
-            }
+        .productListItemInfo {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: start;
+            justify-content: space-between;
+        }
 
-            .productListItem > img {
-                width: 100%;
-                object-fit: contain;
-                margin: auto 0;
+            .productListInfoDivLeft {
+                height: 100%;
             }
+                .productListInfoDivLeft > p {
+                    margin: 7.5px 0 0 0;
+                }
 
-            .productListItemInfo {
-                width: 100%;
+            .productListInfoDivRight{
                 display: flex;
-                flex-direction: row;
-                align-items: start;
-                justify-content: space-between;
+                align-items: end;
+                justify-content: end;
+                height: 100%;
             }
 
-                .productListInfoDivLeft {
-                    height: 100%;
+                .productListInfoDivRight > img{
+                    width: 25px;     
+                    cursor: pointer;
                 }
-                    .productListInfoDivLeft > p {
-                        margin: 7.5px 0 0 0;
-                    }
-
-                .productListInfoDivRight{
-                    display: flex;
-                    align-items: end;
-                    justify-content: end;
-                    height: 100%;
-                }
-
-                    .productListInfoDivRight > img{
-                        width: 25px;     
-                        cursor: pointer;
-                    }
