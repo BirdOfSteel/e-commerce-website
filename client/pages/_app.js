@@ -1,4 +1,4 @@
-import "../styles/global.css"; // Ensure the correct path
+import "../styles/global.css";
 import { ShoppingBasketContext, ShoppingBasketProvider } from "../context/shoppingBasketProvider";
 
 export default function App({ Component, pageProps }) {

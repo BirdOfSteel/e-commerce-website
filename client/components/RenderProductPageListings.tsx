@@ -1,20 +1,13 @@
 import { InferGetStaticPropsType, GetStaticProps } from 'next';
 import { useState, useEffect, useContext } from 'react';
 import { ShoppingBasketContext } from '../context/shoppingBasketProvider';
-import styles from '../styles/ProductPage.module.css';
+import styles from '../styles/ProductsPage.module.css'
 
 // import useAddToShoppingBasket from '../../hooks/useAddToShoppingBasket';
 
 
-export default function renderProductPageListings(productData) {
-    const [phoneData, setPhoneData] = useState([]);
+export default function RenderProductPageListings({ productData }) {
     const { shoppingBasket, setShoppingBasket } = useContext(ShoppingBasketContext);
-
-    useEffect(() => { // CHANGE THIS TO WORK TO FETCH FROM RENDER URL
-        fetch('http://localhost:3001/phones')
-            .then((res) => res.json())
-            .then((data) => setPhoneData(data));
-    }, []);
 
     // can we move this to another file?
     function addToBasket(e) {
@@ -58,19 +51,21 @@ export default function renderProductPageListings(productData) {
             
         })
     }
+    console.log(productData)
 
     return (
-        phoneData.map((phoneObject, index) => (
+        productData.map((productObject, index) => (
             <li key={index} className={styles.productListItem}>
-                <img src={phoneObject.img_src} alt={phoneObject.name} />
+                <img src={productObject.img_src} alt={productObject.name} />
                 <div className={styles.productListItemInfo}>
                     <div className={styles.productListInfoDivLeft}>
-                        <p>{phoneObject.price}</p>
-                        <p>{phoneObject.name}</p>
+                        <p>{productObject.price}</p>
+                        <p>{productObject.name}</p>
                     </div>
                     <div className={styles.productListInfoDivRight}>
                         <img
-                            data-object={JSON.stringify(phoneObject)}
+                            className="bg-[#2563EB]/20 p-[5px] box-content rounded-md "
+                            data-object={JSON.stringify(productObject)}
                             src={'/cart-icon.png'}
                             alt="Add to cart"
                             onClick={(e) => addToBasket(e)}

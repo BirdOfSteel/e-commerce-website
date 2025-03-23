@@ -5,28 +5,28 @@ import ScrollProductListItem from './ScrollProductListItem';
 export default function TabletsScrollList() {
     const [ tabletData, setTabletData ] = useState([])
 
+    // set up loading and error for fetch failure
+
     useEffect(() => {
-        fetch('/tabletData.json')
+        fetch('http://localhost:3001/tablets')
             .then((res) => res.json())
             .then((data) => setTabletData(data))
     },[])
 
-    return (
+    return ( 
         <div className={styles.scrollListDiv}>
             <p className={styles.scrollListHeading}>Tablets</p>
             <ul className={styles.productScrollList}>
-                {
-                    tabletData.map((tabletObject, index) => {
-                        return (
-                            <ScrollProductListItem
-                                src={tabletObject.src}
-                                price={tabletObject.price}
-                                name={tabletObject.name}
-                                key={index}
-                            />
-                        )
-                    })
-                }
+                {tabletData.map((tabletObject, index) => {
+                    return (
+                        <ScrollProductListItem
+                            src={tabletObject.img_src}
+                            price={tabletObject.price}
+                            name={tabletObject.name}
+                            key={index}
+                        />
+                    )
+                })}
             </ul>
         </div>
     )

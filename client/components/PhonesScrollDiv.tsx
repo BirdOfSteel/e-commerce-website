@@ -12,22 +12,30 @@ export const getStaticProps = (async () => {
 
 }) satisfies GetStaticProps<{phoneData: ProductProps[]}>;
 
-export default function PhonesScrollList({ phoneData }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function PhonesScrollList() {
+
+    const [ phoneData, setPhoneData ] = useState([])
+    
+    useEffect(() => { // CHANGE THIS TO WORK TO FETCH FROM RENDER URL
+        fetch('http://localhost:3001/phones')
+            .then((res) => res.json())
+            .then((data) => setPhoneData(data));
+    }, []);
 
     return (
         <div className={styles.scrollListDiv}>
             <p className={styles.scrollListHeading}>Phones</p>
             <ul className={styles.productScrollList}>
-                {/* {phoneData.map((phoneObject, index) => {
+                {phoneData.map((phoneObject, index) => {
                     return (
                         <ScrollProductListItem
-                            src={phoneObject.src}
+                            src={phoneObject.img_src}
                             price={phoneObject.price}
                             name={phoneObject.name}
                             key={index}
                         />
                     )
-                })} */}
+                })}
             </ul>
         </div>
     )

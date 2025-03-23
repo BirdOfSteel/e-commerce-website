@@ -1,5 +1,5 @@
 .header {    
-    background: #e4e4e4;
+    background: #2563EB;
     height: 6vh;
     width: 100%;
     display: flex;
@@ -8,7 +8,7 @@
     position: fixed;
 }
 
-    .header > p {
+    .header > a {
         margin: 0;
     }
 
@@ -16,13 +16,25 @@
         height: 40%;
     }
 
-    .basketDiv {
-        margin-left: auto;
-        width: 25px;
-    }
 
-        .cartIcon {
-            width: 100%;
-            margin-left: auto;
-        }
+    .rightIcons {
+        display: flex;
+        margin-left: auto;
+        width: 9%;
+        justify-content: space-between;
+    }
         
+        .rightIcons > a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .cartIcon {
+                width: 30px;
+            }
+
+            .userIcon {
+                width: 30px;
+            }
+    

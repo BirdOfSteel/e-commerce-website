@@ -6,6 +6,7 @@ export default function mapProductsData(rawData) {
             price: object.fields.price,
             img_src: object.fields.img_src
         };
+        
         return product
     })
 
