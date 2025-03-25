@@ -12,7 +12,7 @@ export default function Header({ setIsMenuOpen }) {
               className={styles.cartIcon} src='/cart-icon.png'
             />
           </Link>
-          <Link href='/register' className={styles.userDiv}>
+          <Link href='/login' className={styles.userDiv}>
             <img 
               className={styles.userIcon} src='/profile-icon.png'
             />

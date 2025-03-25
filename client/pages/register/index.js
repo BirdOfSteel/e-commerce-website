@@ -13,7 +13,7 @@ export default function Register() {
         const password = formData.get('password');
 
         const formObject = {
-            email: email,
+            email: email.toLowerCase(),
             name: name,
             password: password
         }
@@ -33,7 +33,9 @@ export default function Register() {
             if (!res.ok) {
                 setErrorText(data.error?.message || "Something went wrong");
                 return;
-            } 
+            } else {
+                setErrorText(data.message)
+            }
             
         } catch (err) {
             console.error("Fetch failed:", err);
