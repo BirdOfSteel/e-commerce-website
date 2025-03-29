@@ -1,11 +1,12 @@
 import { useContext } from 'react';
 import styles from '../../styles/Basket.module.css';
 import { ShoppingBasketContext } from '../../context/shoppingBasketProvider';
+import { BasketObject } from '../../types/types';
 
 export default function BasketList() {
     const { shoppingBasket, setShoppingBasket} = useContext(ShoppingBasketContext);
 
-    function updateQuantity(objectInBasket, action:string) {
+    function updateQuantity(objectInBasket: BasketObject, action:string) {
         let newQuantity: number = null;
 
         switch (action) {
@@ -20,9 +21,9 @@ export default function BasketList() {
         return newQuantity
     }
 
-    function updateBasket(e, prevBasket) { 
+    function updateBasket(e, prevBasket) { // changeProductQuantity runs this. Updates quantity of selected item and re-renders list.
         const productObject = JSON.parse(e.target.parentElement.dataset.object);
-        const action:string = e.target.id;
+        const action: string = e.target.id;
 
         let updatedBasket = 
                 prevBasket.map((objectInBasket) => {
@@ -43,7 +44,7 @@ export default function BasketList() {
         return updatedBasket
     }
 
-    function changeProductQuantity(e) {
+    function changeProductQuantity(e) { // runs on clicking - or + on a product in basket
         setShoppingBasket((prevBasket) => {
             const updatedBasket = updateBasket(e, prevBasket)
 
@@ -58,7 +59,7 @@ export default function BasketList() {
                     className={styles.basketItemDiv}
                     key={index}    
                 >
-                    <img src={basketObject.img} className={styles.basketItemImg}/>
+                    <img src={basketObject.img_src} className={styles.basketItemImg}/>
                     <div className={styles.basketItemQuantityDiv} data-object={JSON.stringify(basketObject)}>
                         <p 
                             className={styles.quantityButton}

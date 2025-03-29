@@ -12,7 +12,7 @@ export default function Login() {
         const email = formData.get('email');
         const password = formData.get('password');
 
-        const loginObject = {
+        const loginForm = {
             email: email.toLowerCase(),
             password: password
         }
@@ -25,10 +25,20 @@ export default function Login() {
                 headers: {
                   "Content-Type": "application/json"
                 },
-                body: JSON.stringify(loginObject) // sends login form data
+                body: JSON.stringify(loginForm)
             });
-            const data = await res.json();
             
+            const data = await res.json(); 
+
+            // extract 'userinfo' cookie
+            let cookieArray = document.cookie.split('; ');
+            let userData = cookieArray.find(row => row.startsWith('userinfo=')).replace('userinfo=', '');
+            localStorage.setItem('user_info', decodeURIComponent(userData));
+
+
+            // PICK UP FROM HERE!!!!
+            console.log(JSON.parse(localStorage.getItem('user_info'))); // retrieve and parse to object
+        
             if (data) {
                 setServerResponseText(data.message || "Something went wrong");
                 return;

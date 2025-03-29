@@ -98,11 +98,20 @@ app.post('/login', async (req, res) => {
                     'access-token': `${tokenValue}`
                 })
 
-                // !!!!! VERIFY COOKIES ARE STILL SENT OVER PRODUCTION
-                return res.cookie('token', tokenValue, {
+                // !!!!! VERIFY COOKIES ARE STILL SENT OVER IN PRODUCTION
+                res.cookie('token', tokenValue, { // secure cookie with token info
                     httpOnly: isProd ? true : false,
                     secure: isProd ? true : false,
                     sameSite: isProd ? 'None' : 'Lax',
+                    maxAge: 1000 * 60 * 60 * 24
+                })
+                .cookie('userinfo', JSON.stringify({ // public user info cookie
+                    email: matchingUser[0].fields.email,
+                    name: matchingUser[0].fields.name
+                }), {
+                    httpOnly: false,
+                    secure: false,
+                    sameSite: 'Lax',
                     maxAge: 1000 * 60 * 60 * 24
                 })
                 .status(200).json({

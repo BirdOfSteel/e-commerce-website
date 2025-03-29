@@ -11,7 +11,7 @@ export default function PhonesPage() {
             <div className={styles.pageDiv}>
                 <ul>
                     <RenderProductPageListings 
-                        productData={data}
+                        data={data}
                         isLoading={isLoading}
                         error={error}
                     />

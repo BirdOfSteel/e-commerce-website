@@ -1,11 +1,11 @@
-User Authentication – Login, signup, logout, protected routes
+User Authentication – logout, protected routes
+    MID PRIO
+
+Backend/API – Auth, products, orders, user data with DB integration
     MID PRIO
 
 Product Catalog – List, filter, search, and view product details
     LOW PRIO
-
-Shopping Cart – Add/remove/update items, persist cart
-    HIGH PRIO
 
 Checkout Flow – Address input, order summary, fake payment
     LOW PRIO
@@ -13,14 +13,8 @@ Checkout Flow – Address input, order summary, fake payment
 Admin Panel – Product CRUD, view/manage orders
     NOT DONE, DO AUTH FIRST
 
-Backend/API – Auth, products, orders, user data with DB integration
-    MID PRIO
-
 Global State Management – For cart, auth, user
     LOW PRIO - SWITCH TO REDUX
-
-Responsive UI – Mobile-friendly, clean layout
-    DONE
 
 Error + Loading States – Show loaders, handle failures
     LOW PRIO
@@ -30,3 +24,9 @@ Deployment – Live demo + clean README
 
 
 Maybe add SSR?
+Maybe increase font size on some items.
+Add more products
+Change layout of basket item div
+
+
+What if on registration, we picked a random colour from an array, and assigned that to their database. Then on login, the userinfo cookie includes the colour to generate the profile icon with?

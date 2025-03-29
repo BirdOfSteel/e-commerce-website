@@ -24,7 +24,7 @@
             align-items: center;
             justify-content: space-evenly;
             flex-direction: column;
-            padding: 1.5rem 0;
+            padding: 1.5rem;
             margin-bottom: 1rem;
             box-sizing: content-box;
         }
@@ -33,6 +33,7 @@
                 object-fit: contain;
                 width: 100%;
                 height: 100%;
+                margin-bottom: 1rem;
             }
 
             .basketItemQuantityDiv, .basketItemInfoDiv {

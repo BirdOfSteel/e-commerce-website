@@ -15,7 +15,7 @@ export default function Layout({ children }) {
         }}
       />
       <div 
-        className={styles.test}
+        className={styles.menu}
         style={{
           transform: isMenuOpen ? 'translateX(0%)' : 'translateX(-100%)',
           transition: 'all 1s'

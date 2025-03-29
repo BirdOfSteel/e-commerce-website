@@ -21,7 +21,7 @@
     grid-template-columns: repeat(3, 1fr);
 }
 
-    .productListItem { 
+    .productListItem {
         width: 100%;
         box-sizing: border-box;
         height: 350px;

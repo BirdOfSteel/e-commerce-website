@@ -8,7 +8,6 @@ export function useAddToBasket() {
 
     const addToBasket = (productObject: Product) => {
         setShoppingBasket((prevBasket: BasketObject[]) => {
-            console.log(prevBasket)
             // creates array of IDs in shopping basket
             const prevBasketIDs = prevBasket.map((object) => { 
                 return object.id
