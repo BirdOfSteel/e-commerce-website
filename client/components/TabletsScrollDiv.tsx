@@ -1,32 +1,21 @@
-import { useState, useEffect } from 'react'; 
 import styles from '../styles/Home.module.css';
-import ScrollProductListItem from './ScrollProductListItem';
+import useFetchProductData from '../hooks/useFetchProductData';
+import RenderProductScrollListings from './RenderProductScrollList';
 
 export default function TabletsScrollList() {
-    const [ tabletData, setTabletData ] = useState([])
+    const { data, isLoading, error } = useFetchProductData('tablets');
 
-    // set up loading and error for fetch failure
+    if (error) return <p>Error: {error.message}</p>
 
-    useEffect(() => {
-        fetch('http://localhost:3001/tablets')
-            .then((res) => res.json())
-            .then((data) => setTabletData(data))
-    },[])
-
-    return ( 
+    return (
         <div className={styles.scrollListDiv}>
             <p className={styles.scrollListHeading}>Tablets</p>
             <ul className={styles.productScrollList}>
-                {tabletData.map((tabletObject, index) => {
-                    return (
-                        <ScrollProductListItem
-                            src={tabletObject.img_src}
-                            price={tabletObject.price}
-                            name={tabletObject.name}
-                            key={index}
-                        />
-                    )
-                })}
+                <RenderProductScrollListings
+                    data={data}
+                    isLoading={isLoading}
+                    error={error}
+                />
             </ul>
         </div>
     )

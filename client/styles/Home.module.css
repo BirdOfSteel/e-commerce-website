@@ -112,10 +112,17 @@
 
     .heroDesktopImage {
         display: block;
+        border-radius: 5px;
+        border: 1px solid black;
     }
 
     .heroMobileImage {
         display: none;
         height: 100%;
+    }
+
+    .heroMobileDiv {
+        width: 100%;
+        padding: 1em 1em 0 1em;
     }
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Layout from '../Layout.tsx'
+import Link from "next/link";
 
 export default function Login() {
     const [serverResponseText, setServerResponseText] = useState(null);
@@ -17,19 +18,18 @@ export default function Login() {
         }
 
         try {
-            console.log("RUNNING")
+            setServerResponseText(null); // remove or move?
             const res = await fetch('http://localhost:3001/login', {
                 method: "POST",
+                credentials: 'include',
                 headers: {
                   "Content-Type": "application/json"
                 },
                 body: JSON.stringify(loginObject) // sends login form data
             });
             const data = await res.json();
-            setServerResponseText(null); // remove or move?
             
-            if (data.message) {
-                console.log(data)
+            if (data) {
                 setServerResponseText(data.message || "Something went wrong");
                 return;
             }
@@ -43,10 +43,10 @@ export default function Login() {
 
   return (
     <Layout>
-      <div className="h-screen w-screen flex items-center justify-center">
+      <div className="h-screen w-[30%] mx-auto flex flex-col items-center justify-center">
         <form
           onSubmit={handleLoginSubmit}
-          className="bg-[#2563EB] text-white border border-black/20 border-2 rounded-md box-content px-[2%] py-[20px] w-[30%] flex flex-col items-center justify-center gap-3"
+          className="bg-[#2563EB] text-white border border-black/20 border-2 rounded-md box-content px-[2%] py-[20px] w-[100%] flex flex-col items-center justify-center gap-3"
         >
             <p className="font-bold my-[10px]">
                 Enter login details
@@ -85,6 +85,9 @@ export default function Login() {
             </button>
 
         </form>
+        <Link href='/register' className="flex flex-row justify-center mt-[10px] p-[10px] text-white font-bold px-[2%] rounded-md box-content bg-[orange] w-[100%]">
+            Create a new account
+        </Link>
       </div>
     </Layout>
   );

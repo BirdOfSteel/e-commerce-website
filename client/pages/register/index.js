@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Layout from '../Layout.tsx'
+import Link from "next/link";
 
 export default function Register() {
-    const [errorText, setErrorText] = useState(null);
+    const [serverResponseText, setServerResponseText] = useState(null);
 
     async function handleRegisterSubmit(event) {
         event.preventDefault();
@@ -19,6 +20,7 @@ export default function Register() {
         }
 
         try {
+            setServerResponseText(null);
             const res = await fetch('http://localhost:3001/register', {
                 method: "POST",
                 headers: {
@@ -28,25 +30,21 @@ export default function Register() {
             }); // sends form data
 
             const data = await res.json();
-            setErrorText(null);
 
-            if (!res.ok) {
-                setErrorText(data.error?.message || "Something went wrong");
+            if (data) {
+                setServerResponseText(data.message || "Something went wrong");
                 return;
-            } else {
-                setErrorText(data.message)
             }
-            
         } catch (err) {
             console.error("Fetch failed:", err);
-            setErrorText("Server error: Unable to connect. Please try again later.");
+            setServerResponseText("Server error: Unable to connect. Please try again later.");
         }
 
     }
 
   return (
     <Layout>
-      <div className="h-screen w-screen flex items-center justify-center">
+      <div className="h-screen w-screen flex flex-col items-center justify-center">
         <form
           onSubmit={handleRegisterSubmit}
           className="bg-[#2563EB] text-white border border-black/20 border-2 rounded-md box-content px-[2%] py-[20px] w-[30%] flex flex-col items-center justify-center gap-3"
@@ -82,12 +80,12 @@ export default function Register() {
             />
             </label>
 
-            {errorText && 
+            {serverResponseText && 
             <p 
                 id='error-text'
                 className='text-center text-slate-200 p-[3%] mx-[10%] rounded-md bg-[black]/50'
             >
-                {errorText}    
+                {serverResponseText}    
             </p>}
 
             <button 
@@ -97,6 +95,9 @@ export default function Register() {
             </button>
 
         </form>
+        <Link href='/login' className="flex w-[30%] flex-row justify-center mt-[10px] p-[10px] text-white font-bold px-[2%] rounded-md box-content bg-[orange]">
+            Create a new account
+        </Link>
       </div>
     </Layout>
   );

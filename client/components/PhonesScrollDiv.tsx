@@ -1,41 +1,21 @@
-import { InferGetStaticPropsType, GetStaticProps } from 'next';
-import { useState, useEffect } from 'react'
 import styles from '../styles/Home.module.css';
-import ScrollProductListItem from './ScrollProductListItem';
-import { ProductProps } from '../types/productDataProps';
-
-export const getStaticProps = (async () => {
-    const res = await fetch(`https://e-commerce-website-m9nj.onrender.com/phones`); 
-    const phoneData = await res.json();
-    console.log(phoneData)
-    return { props: { phoneData } }
-
-}) satisfies GetStaticProps<{phoneData: ProductProps[]}>;
+import useFetchProductData from '../hooks/useFetchProductData';
+import RenderProductScrollListings from './RenderProductScrollList';
 
 export default function PhonesScrollList() {
+    const { data, isLoading, error } = useFetchProductData('phones');
 
-    const [ phoneData, setPhoneData ] = useState([])
-    
-    useEffect(() => { // CHANGE THIS TO WORK TO FETCH FROM RENDER URL
-        fetch('http://localhost:3001/phones')
-            .then((res) => res.json())
-            .then((data) => setPhoneData(data));
-    }, []);
+    if (error) return <p>Error: {error.message}</p>
 
     return (
         <div className={styles.scrollListDiv}>
-            <p className={styles.scrollListHeading}>Phones</p>
+            <p className={styles.scrollListHeading}>Tablets</p>
             <ul className={styles.productScrollList}>
-                {phoneData.map((phoneObject, index) => {
-                    return (
-                        <ScrollProductListItem
-                            src={phoneObject.img_src}
-                            price={phoneObject.price}
-                            name={phoneObject.name}
-                            key={index}
-                        />
-                    )
-                })}
+                <RenderProductScrollListings
+                    data={data}
+                    isLoading={isLoading}
+                    error={error}
+                />
             </ul>
         </div>
     )

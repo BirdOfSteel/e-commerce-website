@@ -24,6 +24,7 @@ export default function Layout({ children }) {
         <Link href='/'>Home</Link>
         <Link href='/phones'>Phones</Link>
         <Link href='/tablets'>Tablets</Link>
+        <Link href='/protected'>PROTECTED</Link>
       </div>
       {children}
     </>

@@ -1,11 +1,12 @@
 .header {    
     background: #2563EB;
-    height: 6vh;
+    height: 40px;
     width: 100%;
     display: flex;
     align-items: center;
     padding: 0 10px;
     position: fixed;
+    top: 0;
 }
 
     .header > a {
