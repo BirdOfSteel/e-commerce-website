@@ -96,7 +96,7 @@ export default function Register() {
 
         </form>
         <Link href='/login' className="flex w-[30%] flex-row justify-center mt-[10px] p-[10px] text-white font-bold px-[2%] rounded-md box-content bg-[orange]">
-            Create a new account
+            Back to log in
         </Link>
       </div>
     </Layout>

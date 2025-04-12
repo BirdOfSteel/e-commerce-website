@@ -14,11 +14,11 @@ export function useAddToBasket() {
             })
     
             // if selected product is already in the basket, maps over them all.
-            if (prevBasketIDs.includes(productObject.id)) {
+            if (prevBasketIDs.includes(productObject.product_id)) {
     
                 const updatedBasket = 
                     prevBasket.map((objectInBasket) => {
-                        if (objectInBasket.id === productObject.id) { // if already in basket, add 1 to quantity
+                        if (objectInBasket.id === productObject.product_id) { // if already in basket, add 1 to quantity
                             return {
                                 ...objectInBasket,
                                 quantity: objectInBasket.quantity + 1
@@ -34,10 +34,10 @@ export function useAddToBasket() {
             // else, a new product object is added to the basket.
             else {
                 return [...prevBasket, {
-                    id: productObject.id,
+                    id: productObject.product_id,
                     name: productObject.name,
                     price: productObject.price,
-                    img_src: productObject.img_src,
+                    img_src: productObject.filepath,
                     quantity: 1
                 }]
             }

@@ -10,7 +10,7 @@ export default function Home() {
           <div className={styles.root}>
           <div className={styles.heroMobileDiv}>
             <img 
-              src='/phone-images/S25-ultra.png'
+              src='/s25-ultra.png'
               className={styles.heroMobileImage}
             />
             <img 

@@ -9,7 +9,7 @@ export default function PhonesScrollList() {
 
     return (
         <div className={styles.scrollListDiv}>
-            <p className={styles.scrollListHeading}>Tablets</p>
+            <p className={styles.scrollListHeading}>Phones</p>
             <ul className={styles.productScrollList}>
                 <RenderProductScrollListings
                     data={data}

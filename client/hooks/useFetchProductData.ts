@@ -11,6 +11,7 @@ export default function useFetchProductData(endpoint: string) {
             try {
                 const res = await fetch(`http://localhost:3001/${endpoint}`);
                 const data = await res.json();
+                console.log(data)
                 setData(data);
             } catch (err) {
                 setError(err);

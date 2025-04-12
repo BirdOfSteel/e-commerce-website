@@ -42,11 +42,11 @@ export default function RenderProductPageListings({ data, isLoading, error }: Re
                 : 
 
             data.map((productObject) => ( // actual listings
-                <li key={productObject.id} className={styles.productListItem}>
-                    <img src={productObject.img_src} alt={productObject.name} />
+                <li key={productObject.product_id} className={styles.productListItem}>
+                    <img src={productObject.filepath} alt={productObject.name} />
                     <div className={styles.productListItemInfo}>
                         <div className={styles.productListInfoDivLeft}>
-                            <p>{productObject.price}</p>
+                            <p>{'£' + productObject.price}</p>
                             <p>{productObject.name}</p>
                         </div>
                         <div className={styles.productListInfoDivRight}>

@@ -1,0 +1,228 @@
+import dotenv from 'dotenv';
+    dotenv.config({ path: '.env.local' });
+
+import express from 'express';
+import path, {dirname} from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import helmet from 'helmet';
+import cors from 'cors';
+import bcrypt from 'bcrypt';
+import cookieParser from 'cookie-parser';
+import { v4 as uuidv4 } from 'uuid';
+import mapProductsData from './utils/mapProductsData.js';
+import completeImageFilePath from './utils/completeImageFilePath.js';
+import { registrationSchema } from './schema/registrationSchema.js';
+import { loginSchema } from './schema/loginSchema.js';
+import pg from 'pg';
+import Redis from 'ioredis';
+
+const app = express();
+const isProd = process.env.NODE_ENV === 'production';
+const port = isProd ? process.env.POSTGRES_SERVER_PORT : 3001; // FIX LINE TO WORK ON PRODUCTION PORT
+
+
+const redis = new Redis(
+    `rediss://default:${process.env.UPSTASH_REDIS_TOKEN}@${process.env.UPSTASH_REDIS_URL}:6379`
+);
+
+// initialise postgres
+const { Pool } = pg;
+const pool = new Pool({
+    user: process.env.POSTGRES_USERNAME,
+    password: process.env.POSTGRES_PASSWORD,
+    host: process.env.POSTGRES_SERVER_IP,
+    port: process.env.POSTGRES_SERVER_PORT,
+    database: process.env.POSTGRES_DATABASE
+});
+
+
+app.use(cors({
+    origin: 'http://localhost:3000', // !! IMPORTANT! ALLOWS DATA TO MOVE BETWEEN FRONTEND AND BACKEND
+    credentials: true
+}));
+app.use(helmet());
+app.use(express.json());
+app.use(cookieParser());
+
+// allows images to be accessed by other websites
+app.use('/images', (req, res, next) => {
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    next();
+});    
+
+export const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+console.log(__dirname)
+
+// MAKE FRONTEND OR BACKEND CHECK FOR SERVER RESPONSE. CRASH CURRENTLY OCCURS IF SERVER IS DOWN.
+app.get('/', (req, res) => {
+    res.send(`API is online`)
+})
+
+// phones data
+app.get('/phones', async (req, res) => {
+    try {
+        const queryResponse = await pool.query("SELECT * FROM products WHERE product_type = 'phone'");
+        const hostURL = req.protocol + '://' + req.get('host');
+        const productData = completeImageFilePath(queryResponse.rows, hostURL);
+        res.send(productData);
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ 
+            message: "Failed to fetch records from database" 
+        });
+    }
+})
+
+
+// tablets data
+app.get('/tablets', async (req, res) => {
+    try {
+        const queryResponse = await pool.query("SELECT * FROM products WHERE product_type = 'tablet'");
+        const hostURL = req.protocol + '://' + req.get('host');
+        const productData = completeImageFilePath(queryResponse.rows, hostURL);
+        res.send(productData);
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({ 
+            message: "Failed to fetch records from database" 
+        });
+    }
+})
+
+
+
+app.post('/login', async (req, res) => {
+    try {
+        const parsedRequest = await loginSchema.safeParseAsync(req.body);
+        
+        if (!parsedRequest.success) { // returns error on invalid schema
+            return res.status(400).json({
+                message: parsedRequest.error.errors[0].message
+            })
+        }
+
+        // check if user exists in database
+        const queryResponse = await pool.query("SELECT * FROM users WHERE LOWER(email) = $1::text", [req.body.email.toLowerCase()]);
+        const userInDB = queryResponse.rows[0];
+
+        if (userInDB) {
+            const isPasswordCorrect = await bcrypt.compare(
+                req.body.password,
+                queryResponse.rows[0].password_hash
+            );
+
+            if (isPasswordCorrect) { // log-in successful
+
+                let newSessionToken = uuidv4();
+                await redis.set(newSessionToken, JSON.stringify({
+                    email: req.body.email
+                }));
+                await redis.expire(newSessionToken, 43200); // 43200 seconds is 12 hours
+                await pool.query('UPDATE users SET session_token=$1 WHERE email=$2',[newSessionToken, req.body.email]);
+
+                // !!!!! VERIFY COOKIES ARE STILL SENT OVER IN PRODUCTION
+                res.cookie('session_token', newSessionToken, { // secure cookie with session_token info
+                    httpOnly: isProd ? true : false,
+                    secure: isProd ? true : false,
+                    sameSite: isProd ? 'None' : 'Lax',
+                    maxAge: 1000 * 60 * 60 * 24
+                })
+                .cookie('userinfo', JSON.stringify({ // public user info cookie
+                    email: userInDB.email,
+                    name: userInDB.username              
+                }), {
+                    httpOnly: false,
+                    secure: false,
+                    sameSite: 'Lax',
+                    maxAge: 1000 * 60 * 60 * 24
+                })
+                .status(200).json({
+                    message: 'Success! Logging in...'
+                })
+            } else { // invalid password
+                return res.status(401).json({
+                    message: "Invalid credentials. Check email and password."
+                })
+            }
+        } else { // no account with this email exists
+            return res.status(401).json({
+                message: "Invalid credentials. Check email and password."
+            });
+        };
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            message: "Internal server error" 
+        });
+    };
+})
+
+
+app.post('/register', async (req, res) => {
+    try {
+        const parsedRequest = await registrationSchema.safeParseAsync(req.body);
+        
+        if (!parsedRequest.success) { // if user inputs don't follow schema, sends error message
+            return res.status(400).json({
+                message: parsedRequest.error.errors[0].message
+            });
+        };
+        
+        const queryResponse = await pool.query('SELECT email,password_hash FROM users WHERE LOWER(email) = $1::text',[req.body.email.toLowerCase()]); // checks if email is already in database
+        const emailInDB = queryResponse.rows[0];
+
+        if (emailInDB) {
+            return res.status(400).json({
+                message: "Account with this email already exists"
+            });
+        } else {
+            const hashedPassword = await bcrypt.hash(req.body.password, parseInt(process.env.BCRYPT_SALT_ROUNDS));
+            
+            await pool.query(`INSERT INTO users VALUES($1,$2,$3)`, [req.body.email, req.body.name, hashedPassword]);
+            
+            return res.status(200).json({
+                message: "Account created!"
+            });
+        }
+    } catch (err) { // server error
+        res.status(500).json({
+            message: "Internal server error" 
+        });
+    };
+})
+
+app.post('/logout', async (req, res) => {
+    const sessionToken = req.cookies.session_token;
+
+    if (sessionToken) {
+        try {
+            await redis.del(sessionToken);
+        } catch (err) {
+            console.error('Error clearing session: ', err)
+        };
+
+        res.clearCookie('session_token', {
+            httpOnly: isProd ? true : false,
+            secure: isProd,
+            sameSite: isProd ? 'None' : 'Lax',
+        });
+        res.clearCookie('userinfo', {
+            httpOnly: false,
+            secure: isProd,
+            sameSite: isProd ? 'None' : 'Lax',
+        });
+    }
+
+
+    res.status(200).json({
+        message: "Logged out successfully"
+    });
+});
+
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+})

@@ -1,8 +1,11 @@
 export interface Product {
-    id: string;
+    brand: string;
+    filepath: string;
     name: string;
+    pk: number;
     price: string;
-    img_src: string;
+    product_id: string;
+    product_type: string;
 }
 
 export interface RenderListingsProps {

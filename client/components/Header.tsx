@@ -6,6 +6,13 @@ export default function Header({ setIsMenuOpen }) {
     <header className={styles.header}>
         <img className={styles.hamburgerIcon} src='/hamburger.png' onClick={setIsMenuOpen}/>
         
+        <div className={styles.routes}>
+          <Link href='/'>Home</Link>
+          <Link href='/phones'>Phones</Link>
+          <Link href='/tablets'>Tablets</Link>
+          <Link href='/protected'>PROTECTED</Link>
+        </div>
+
         <div className={styles.rightIcons}>
           <Link href='/basket' className={styles.basketDiv}>
             <img 

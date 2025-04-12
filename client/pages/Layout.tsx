@@ -14,18 +14,6 @@ export default function Layout({ children }) {
           setIsMenuOpen(!isMenuOpen)
         }}
       />
-      <div 
-        className={styles.menu}
-        style={{
-          transform: isMenuOpen ? 'translateX(0%)' : 'translateX(-100%)',
-          transition: 'all 1s'
-        }}
-      >
-        <Link href='/'>Home</Link>
-        <Link href='/phones'>Phones</Link>
-        <Link href='/tablets'>Tablets</Link>
-        <Link href='/protected'>PROTECTED</Link>
-      </div>
       {children}
     </>
   );

@@ -35,7 +35,6 @@ export default function Login() {
             let userData = cookieArray.find(row => row.startsWith('userinfo=')).replace('userinfo=', '');
             localStorage.setItem('user_info', decodeURIComponent(userData));
 
-
             // PICK UP FROM HERE!!!!
             console.log(JSON.parse(localStorage.getItem('user_info'))); // retrieve and parse to object
         
