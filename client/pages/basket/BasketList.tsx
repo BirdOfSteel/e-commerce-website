@@ -1,54 +1,10 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext } from 'react';
 import styles from '../../styles/Basket.module.css';
 import { ShoppingBasketContext } from '../../context/shoppingBasketProvider';
 import { BasketObject } from '../../types/types';
-import getCurrentDate from '../../utils/getCurrentDate'
 
 export default function BasketList() {
-    const { shoppingBasket, setShoppingBasket } = useContext(ShoppingBasketContext);
-    const [ hasCheckedOut, setHasCheckedOut ] = useState(false);
-    const [ serverResponseMessage, setServerResponseMessage ] = useState(null);
-    const [ basketTotal, setBasketTotal ] = useState(0);
- 
-    useEffect(() => {
-        const basketTotalValue = shoppingBasket.reduce((totalValue, basketItem) =>{
-            totalValue += Number(basketItem.subtotal.replace(/,/g, ''));
-            return totalValue
-        }, 0)
-        setBasketTotal(basketTotalValue);
-    }, [shoppingBasket])
-
-    async function handleCheckout() {
-        if (shoppingBasket.length > 0) {
-            try {
-                const res = await fetch('http://localhost:3001/add-to-order-history', {
-                    method: "POST",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        timestamp: 
-                            getCurrentDate(),
-                        total: 
-                            `${basketTotal.toLocaleString('en', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                            })}`,
-                        shoppingBasket: 
-                            shoppingBasket
-                    })
-                });
-                const data = await res.json();
-
-                if (res.ok) {
-                    setShoppingBasket([]);
-                    setHasCheckedOut(true);                }
-            } catch (err) {
-                setServerResponseMessage("Server error: Unable to connect. Please try again later.");
-            }
-        }
-    }
+    const { shoppingBasket, setShoppingBasket} = useContext(ShoppingBasketContext);
 
     function updateQuantity(objectInBasket: BasketObject, action:string) {
         let newQuantity: number = null;
@@ -71,23 +27,11 @@ export default function BasketList() {
 
         let updatedBasket = 
                 prevBasket.map((objectInBasket) => {
-                    console.log("1")
                     if (objectInBasket.id === productObject.id) {
-                        const updatedObjectInBasket = {
+                        return {
                             ...objectInBasket,
                             quantity: updateQuantity(objectInBasket, action)
                         }
-
-                        let subtotal = 
-                            (updatedObjectInBasket.price * updatedObjectInBasket.quantity).toLocaleString('en', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                            });
-
-                        return {
-                            ...updatedObjectInBasket,
-                            subtotal: subtotal
-                        };
                     } else {
                         return objectInBasket
                     }
@@ -95,26 +39,25 @@ export default function BasketList() {
             
         updatedBasket = updatedBasket.filter((item) => {
             return item.quantity > 0
-        });
+        })
 
         return updatedBasket
     }
 
     function changeProductQuantity(e) { // runs on clicking - or + on a product in basket
         setShoppingBasket((prevBasket) => {
-            const updatedBasket = updateBasket(e, prevBasket);
+            const updatedBasket = updateBasket(e, prevBasket)
 
             return updatedBasket
         })
     }
     
     function generateBasketList() {
-
         return shoppingBasket.map((basketObject, index) => {
             return (
                 <div 
                     className={styles.basketItemDiv}
-                    key={basketObject.id}    
+                    key={index}    
                 >
                     <img src={basketObject.img_src} className={styles.basketItemImg}/>
                     <div className={styles.basketItemQuantityDiv} data-object={JSON.stringify(basketObject)}>
@@ -141,9 +84,8 @@ export default function BasketList() {
                         />
                     </div>
                     <div className={styles.basketItemInfoDiv}>
+                        <p>{basketObject.price}</p>
                         <p>{basketObject.name}</p>
-                        <p>£{basketObject.price}</p>
-                        <p className='mt-[1rem]'>Subtotal: £{basketObject.subtotal}</p>
                     </div>
                 </div>
             )
@@ -152,44 +94,10 @@ export default function BasketList() {
 
     return (
         <div className={styles.basketDiv}>
-            { hasCheckedOut ?
-                <div className='mx-auto mt-[25vh] text-center px-[20%] font-bold'>
-                    <p className='mb-[2rem]'>
-                        Thank you for your purchase!
-                    </p>
-                    <p>
-                        You can find your orders by hovering over your profile in the top right and clicking 'Orders'.
-                    </p>
-                </div>
-                    : 
+            {
                 shoppingBasket.length > 0 ? 
-                    <div>
-                        {generateBasketList()}
-                        <div>
-                            <div className='flex flex-col mt-[2rem] text-[rgb(48,48,48)]'>
-                                <p className='text-[dark-grey] font-bold'>
-                                    Total: &nbsp;
-                                </p>
-                                <p>
-                                    £{basketTotal.toLocaleString('en', {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })}
-                                </p>
-                            </div>
-                            <p>
-                                {serverResponseMessage}
-                            </p>
-                            <p 
-                                className='mt-[1rem] cursor-pointer rounded-md text-white font-bold bg-[orange] border-2 border-[rgb(255,145,0)] text-center py-[0.75rem]'
-                                onClick={() => handleCheckout()}
-                            >
-                                Proceed to checkout
-                            </p>
-                        </div> 
-                    </div>
-                        :
-                    <p className='font-bold'>Basket is empty</p>
+                generateBasketList() :
+                <p>Basket is empty</p>
             }
         </div>
     )

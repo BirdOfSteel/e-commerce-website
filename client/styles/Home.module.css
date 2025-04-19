@@ -3,7 +3,9 @@
 
 .root {
     width: 100vw;
+    height: 100vh;
     font-family: "Jura", serif;
+    padding-top: 3rem;
 }
 
     .heroDesktopImage {
@@ -15,43 +17,43 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        font-size: clamp(10px, 5vw, 22.5px);
+        padding: 0.75rem 0;
+        font-size: clamp(10px, 3vw, 20px);
     }
 
         .heroMobileDiv > h1 {
             margin: 0;
             padding-top: 0.5rem;
-            font-size: clamp(10px 3vw, 20px);
         }
 
         .heroMobileImage {
             width: 80%;
-            padding: 0 0 1rem 0;
-            filter: drop-shadow(0 0px 20px rgba(0, 0, 0, 0.2));
+            padding: 1rem 0;
         }
     
     .scrollListDiv {
-        padding: 0 1rem;
+        height: 350px;
+        background: #f3f3f3;
+        padding: 0 2.5% 0 2.5%;
         margin-bottom: 50px;
         display: flex;
         flex-direction: column;
     }
 
-    
         .scrollListHeading {
             font-size: 1.5rem;
             padding: 0.5rem 0 0.5rem 0;
             margin: 0;
         }
-
+        
         .productScrollList {
-            height: clamp(310px, 17vw, 350px);
+            height: 100%;
             width: 100%;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: row;
-            align-items: start;
+            align-items: spt;
             overflow-x: scroll;
             background: inherit;
         }
@@ -59,89 +61,72 @@
             .scrollProductLi {
                 min-height: 140px;
                 height: 100%;
-                max-height: 290px;
+                max-height: 260px;
                 min-width: 180px;
                 width: 180px;
                 display: flex;
                 flex-direction: column;
                 font-size: clamp(0.9rem, 1vw, 2rem);
-                padding: 0.75rem 0.5rem;
                 
                 list-style-type: none;
                 border: 1px solid black;
                 background: white;
                 border-radius: 5px;
-                filter: drop-shadow(0 0px 10px rgba(0, 0, 0, 0.05));
+
             }
 
                 .scrollProductLi:not(:last-child) {
                     margin-right: 0.75rem;
                 }
-                .scrollProductImage {
-                    width: 100%;
-                    height: auto;
-                    max-width: 100%;
-                    object-fit: contain;
-                    margin: auto 0;
 
-                    /* alt text */
-                    text-align: center;
-                    font-weight: bolder;
-                }
-
-                .scrollProductInfoDiv {
+                .scrollProductImageDiv {
+                    height: 80%;
                     display: flex;
-                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
                 }
 
-                    .infoDivLeftDiv {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: start;
-                        align-items: start;
-                        width: 100%;
-                    }
-                        .scrollProductLiPrice {
-                            color: rgb(32, 32, 32);
-                            font-size: clamp(16px,1.75vw, 20px);
-                        }
+                    .scrollProductImage {
+                        padding: 0;
+                        width: 90%;
+                        height: auto;
+                        max-width: 100%;
+                        max-height: 90%;
+                        object-fit: contain;
 
-                        .scrollProductLiName {
-                            width: 100%;
-                            font-weight: bold;
-                            font-size: clamp(17px, 1.5vw, 18px);
-                        }
-                    
-                    .scrollProductLiCartIcon {
-                        height: 1.5rem;
-                        width: 1.5rem;
-                        position: absolute;
-                        bottom: 3%;
-                        right: 5%;
+                        /* alt text */
+                        text-align: center;
+                        font-weight: bolder;
                     }
+
+                .scrollProductLiPrice {
+                    margin: 0 auto;
+                    color: rgb(32, 32, 32);
+                }
+
+                .scrollProductLiName {
+                    margin: 0 auto;
+                    text-align: center;
+                    font-weight: bold;
+                    
+                }
 
 
 @media (min-width: 520px) {
 
-    .root {
-        padding: 0 clamp(5%, 1vw, 15%);
+    .heroDesktopImage {
+        display: block;
+        border-radius: 5px;
+        border: 1px solid black;
     }
 
-        .heroDesktopImage {
-            display: block;
-            border-radius: 5px;
-            border: 1px solid rgba(0, 0, 0, 0.3);
-            padding: clamp(1rem, 10vw, 12rem);
-            padding-bottom: 0;
-        }
+    .heroMobileImage {
+        display: none;
+        height: 100%;
+    }
 
-        .heroMobileImage {
-            display: none;
-            height: 100%;
-        }
-
-
-        .scrollListDiv {
-            padding: 0;
-        }
+    .heroMobileDiv {
+        width: 100%;
+        padding: 1em 1em 0 1em;
+    }
 }
