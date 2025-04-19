@@ -16,12 +16,13 @@ import { registrationSchema } from './schema/registrationSchema.js';
 import { loginSchema } from './schema/loginSchema.js';
 import pg from 'pg';
 import Redis from 'ioredis';
+import generateRandomProfileColour from './utils/generateRandomProfileColour.js';
 
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';
 const port = isProd ? process.env.POSTGRES_SERVER_PORT : 3001; // FIX LINE TO WORK ON PRODUCTION PORT
 
-
+// connect to redis
 const redis = new Redis(
     `rediss://default:${process.env.UPSTASH_REDIS_TOKEN}@${process.env.UPSTASH_REDIS_URL}:6379`
 );
@@ -53,7 +54,6 @@ app.use('/images', (req, res, next) => {
 
 export const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use('/images', express.static(path.join(__dirname, 'images')));
-console.log(__dirname)
 
 // MAKE FRONTEND OR BACKEND CHECK FOR SERVER RESPONSE. CRASH CURRENTLY OCCURS IF SERVER IS DOWN.
 app.get('/', (req, res) => {
@@ -68,7 +68,6 @@ app.get('/phones', async (req, res) => {
         const productData = completeImageFilePath(queryResponse.rows, hostURL);
         res.send(productData);
     } catch (err) {
-        console.log(err)
         return res.status(500).json({ 
             message: "Failed to fetch records from database" 
         });
@@ -91,7 +90,80 @@ app.get('/tablets', async (req, res) => {
     }
 })
 
+app.get('/get-order-history', async (req, res) => {
+    try {
+        const sessionToken = req.cookies.session_token;
+        const userinfoCookie = req.cookies.userinfo;
+        if (userinfoCookie) {
+            const email = JSON.parse(userinfoCookie).email;
 
+            const query = await pool.query(`
+                SELECT order_history 
+                FROM orders 
+                WHERE email = $1`,
+                [email]
+            );
+
+            const orderHistory = query.rows[0].order_history;
+            
+            res.send(orderHistory);
+        } else {
+            return res.status(401).json({
+                message: "Invalid session token. Please log in and try again."
+            })
+        }
+    } catch (err) {
+        return res.status(500).json({
+            message: "Internal server error, please try again or contact website owner if the problem continues."
+        })
+    }
+});
+
+app.post('/add-to-order-history', async (req, res) => {
+    try {
+        const sessionToken = req.cookies.session_token;
+        const isSessionValid = await redis.get(sessionToken); // checks session exists
+        
+        if (isSessionValid) { // finish query after veryifying data structure of basket
+            if (req.body.shoppingBasket && req.cookies.userinfo && req.body.shoppingBasket.length > 0) {
+                const email = JSON.parse(req.cookies.userinfo).email;
+                const shoppingBasket = JSON.stringify({order: req.body});
+                console.log(shoppingBasket)
+
+                await pool.query(`
+                    INSERT INTO orders(email, order_history)
+                    VALUES($1, '[]'::jsonb)
+                    ON CONFLICT (email) DO NOTHING`,
+                    [email]
+                ); // adds email to 'orders' table, unless it exists
+
+                await pool.query(`
+                    UPDATE orders 
+                    SET order_history = COALESCE(order_history, '[]'::jsonb) || $1::jsonb 
+                    WHERE email = $2`,
+                    [shoppingBasket, email]
+                ); // adds order to 'orders' table under email
+
+                return res.status(200).json({
+                    message: "Session verified. Processing payment..."
+                });
+            } else {
+                return res.status(400).json({
+                    message: "Basket is empty or invalid. Please add items and try again, or contact website owner if this continues."
+                });
+            }
+        } else {
+            return res.status(401).json({
+                message: "Invalid or expired session. Please log in again."
+            });
+        }  
+    } catch (err) {
+        console.log(err)
+        return res.status(500).json({
+            message: "Error trying to process order. Please try logging in again, or contact the website owner if the problem continues."
+        })
+    }
+})
 
 app.post('/login', async (req, res) => {
     try {
@@ -114,24 +186,33 @@ app.post('/login', async (req, res) => {
             );
 
             if (isPasswordCorrect) { // log-in successful
+                const sessionToken = req.cookies.session_token;
+                const isSessionValid = await redis.get(sessionToken);
 
+                if (isSessionValid) { // if user logs in while holding a valid session token, it's removed from redis
+                    await redis.del(sessionToken);
+                }
+                    
                 let newSessionToken = uuidv4();
+
                 await redis.set(newSessionToken, JSON.stringify({
                     email: req.body.email
                 }));
                 await redis.expire(newSessionToken, 43200); // 43200 seconds is 12 hours
                 await pool.query('UPDATE users SET session_token=$1 WHERE email=$2',[newSessionToken, req.body.email]);
 
+
                 // !!!!! VERIFY COOKIES ARE STILL SENT OVER IN PRODUCTION
                 res.cookie('session_token', newSessionToken, { // secure cookie with session_token info
                     httpOnly: isProd ? true : false,
                     secure: isProd ? true : false,
                     sameSite: isProd ? 'None' : 'Lax',
-                    maxAge: 1000 * 60 * 60 * 24
+                    maxAge: 1000 * 43200 // 12 hours in milliseconds
                 })
                 .cookie('userinfo', JSON.stringify({ // public user info cookie
                     email: userInDB.email,
-                    name: userInDB.username              
+                    name: userInDB.username,
+                    profileColour: userInDB.profile_colour              
                 }), {
                     httpOnly: false,
                     secure: false,
@@ -160,7 +241,6 @@ app.post('/login', async (req, res) => {
     };
 })
 
-
 app.post('/register', async (req, res) => {
     try {
         const parsedRequest = await registrationSchema.safeParseAsync(req.body);
@@ -180,9 +260,10 @@ app.post('/register', async (req, res) => {
             });
         } else {
             const hashedPassword = await bcrypt.hash(req.body.password, parseInt(process.env.BCRYPT_SALT_ROUNDS));
-            
-            await pool.query(`INSERT INTO users VALUES($1,$2,$3)`, [req.body.email, req.body.name, hashedPassword]);
-            
+            const profileColour = generateRandomProfileColour();
+
+            await pool.query(`INSERT INTO users (email, username, password_hash, profile_colour) VALUES($1,$2,$3,$4)`, [req.body.email, req.body.name, hashedPassword, profileColour]);
+                    
             return res.status(200).json({
                 message: "Account created!"
             });
@@ -196,7 +277,6 @@ app.post('/register', async (req, res) => {
 
 app.post('/logout', async (req, res) => {
     const sessionToken = req.cookies.session_token;
-
     if (sessionToken) {
         try {
             await redis.del(sessionToken);

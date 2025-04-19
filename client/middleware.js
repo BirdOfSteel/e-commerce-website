@@ -1,35 +1,39 @@
-// middleware.js (root of your project)
 import { NextResponse } from 'next/server';
-import { Redis } from '@upstash/redis';
-
-const redis = new Redis({
-    url: process.env.UPSTASH_REDIS_URL,
-    token: process.env.UPSTASH_REDIS_TOKEN,
-});
+import validateAuth from './utils/middleware/validateAuth.tsx';
 
 export async function middleware(req) {
-    try {
-        const sessionCookie = req.cookies.get('session_token');
-
-        // Check if session token exists
-        if (!sessionCookie) {
-            return NextResponse.redirect(new URL('/login', req.url));
-        }
-
-        // Validate session token in Redis
-        const redisSessionValues = await redis.get(sessionCookie.value);
-        if (!redisSessionValues) {
-            return NextResponse.redirect(new URL('/login', req.url));
-        }
-
-        // If everything is valid, proceed to the next middleware or route
+    const { pathname } = req.nextUrl;
+    const response = NextResponse.next();
+    
+    if ( // skip calls for static assets
+        pathname.startsWith('/_next') || 
+        pathname.startsWith('/static') || 
+        pathname === '/favicon.ico' ||
+        /\.(png|jpg|jpeg|gif|svg|ico|webp|ttf|woff|woff2|eot|otf)$/.test(pathname) // assets in public
+    ) {
         return NextResponse.next();
+    }
+    
+    try {
+        const { isAuthenticated, message } = await validateAuth(req);
+        
+        if (!isAuthenticated) {
+            const redirectUrl = new URL('/login', req.url);
+            redirectUrl.searchParams.set('error', message);
+
+            return NextResponse.redirect(redirectUrl);
+        }
+
     } catch (error) {
-        console.error("Auth error: ", error);
         return NextResponse.redirect(new URL('/error', req.url));
     }
+
+    return response;
 }
 
 export const config = {
-    matcher: ['/protected/:path*']
+    matcher: [
+        '/((?!$|phones/?$|tablets/?$|login/?$|register/?$).*)',
+    ],
 };
+  
