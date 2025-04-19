@@ -8,7 +8,8 @@ export function ShoppingBasketProvider({ children }) {
     useEffect(() => { // for syncing basket context to basket in local storage on first render
         if (typeof window !== 'undefined') { // checks window to see if we're in browser environment
             const localStorageBasket = localStorage.getItem('basket');
-            if (localStorageBasket) { 
+            if (localStorageBasket !== 'undefined') { 
+                console.log(localStorageBasket)
                 setShoppingBasket(JSON.parse(localStorageBasket));
             }
         }

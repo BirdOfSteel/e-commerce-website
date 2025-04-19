@@ -1,37 +1,20 @@
-User Authentication – logout, protected routes
-    MID PRIO
-
-Backend/API – Auth, products, orders, user data with DB integration
-    MID PRIO
-
 Product Catalog – List, filter, search, and view product details
     LOW PRIO (can be saved in state, use headless ui)
-
-<!-- Checkout Flow – Address input, order summary, fake payment - CAN BE SIMPLE
-    LOW PRIO -->
-
-<!-- Admin Panel – Product CRUD, view/manage orders
-    NOT DONE, DO AUTH FIRST -->
 
 Deployment – Live demo + clean README
     FOR END OF PROJECT
 
+Change basket and default profile icon colour to white
+align profile menu list to the right
+Convert files to .tsx
+Fix scroll on x axis
+Make header smaller on larger screen sizes and round off edges?
+Change hero border? Maybe remove?
+Server returns 'server error message' if field is empty. change the message to ask for login.
+Resize login/register divs
+Pointer on cart icon in homepage. Add grey hover background with rgb(x,y,z,transparentvalue) to cart icon.
+make /error/index.js as a default 404 page
+change colours for profile icon
+consider rate limiting and returning an error message if possible
 
-IMPLEMENT LOG OUT
-
-Maybe add SSR?
-Maybe increase font size on some items.
-Add more products
-Change layout of basket item div
-
-
-What if on registration, we picked a random colour from an array, and assigned that to their database. Then on login, the userinfo cookie includes the colour to generate the profile icon with?
-
-
-old json script
-"scripts": {
-  "dev": "cross-env NODE_ENV=development nodemon server.js",
-  "start": "cross-env NODE_ENV=production nodemon server.js"
-}
-
-To run build with current node typescript setup, use 'npm run build' to compile, then 'npm start'.
+Upload frontend to netlify and backend to raspberry pi

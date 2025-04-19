@@ -19,9 +19,20 @@ export function useAddToBasket() {
                 const updatedBasket = 
                     prevBasket.map((objectInBasket) => {
                         if (objectInBasket.id === productObject.product_id) { // if already in basket, add 1 to quantity
-                            return {
+                            const updatedObjectInBasket = {
                                 ...objectInBasket,
                                 quantity: objectInBasket.quantity + 1
+                            }
+
+                            const subtotal = 
+                                (updatedObjectInBasket.price * updatedObjectInBasket.quantity).toLocaleString('en', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+
+                            return {
+                                ...updatedObjectInBasket,
+                                subtotal: subtotal
                             }
                         } else { // else, do not modify the object.
                             return objectInBasket
@@ -38,7 +49,8 @@ export function useAddToBasket() {
                     name: productObject.name,
                     price: productObject.price,
                     img_src: productObject.filepath,
-                    quantity: 1
+                    quantity: 1,
+                    subtotal: productObject.price
                 }]
             }
         })

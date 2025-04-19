@@ -6,12 +6,12 @@ export default function useFetchProductData(endpoint: string) {
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
     const [ error, setError ] = useState<Error | null>(null);
 
-    useEffect(() => { // CHANGE THIS TO NOT USE LOCALHOST
+    useEffect(() => { // CHANGE THIS TO NOT USE LOCALHOST ON PRODUCTION
         async function fetchPhoneData() {
             try {
                 const res = await fetch(`http://localhost:3001/${endpoint}`);
                 const data = await res.json();
-                console.log(data)
+                
                 setData(data);
             } catch (err) {
                 setError(err);

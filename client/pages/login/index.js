@@ -1,9 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import Layout from '../Layout.tsx'
 import Link from "next/link";
+import { useSearchParams, useRouter } from 'next/navigation';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function Login() {
-    const [serverResponseText, setServerResponseText] = useState(null);
+    const router = useRouter();
+    const [serverResponseMessage, setServerResponseMessage] = useState(null);
+    const { user, setUser } = useContext(AuthContext);
+
+    const searchParams = useSearchParams();
+
+    useEffect(() => { // checks for error message in searchparams
+        const errorSearchParams = searchParams.get('error');
+
+        if (errorSearchParams) {
+            setServerResponseMessage(errorSearchParams);
+        }
+    },[searchParams]);
+
 
     async function handleLoginSubmit(event) {
         event.preventDefault();
@@ -18,7 +33,7 @@ export default function Login() {
         }
 
         try {
-            setServerResponseText(null); // remove or move?
+            setServerResponseMessage(null); // remove or move?
             const res = await fetch('http://localhost:3001/login', {
                 method: "POST",
                 credentials: 'include',
@@ -33,29 +48,27 @@ export default function Login() {
             // extract 'userinfo' cookie
             let cookieArray = document.cookie.split('; ');
             let userData = cookieArray.find(row => row.startsWith('userinfo=')).replace('userinfo=', '');
-            localStorage.setItem('user_info', decodeURIComponent(userData));
-
-            // PICK UP FROM HERE!!!!
-            console.log(JSON.parse(localStorage.getItem('user_info'))); // retrieve and parse to object
-        
-            if (data) {
-                setServerResponseText(data.message || "Something went wrong");
-                return;
-            }
             
+            if (data) {
+                setServerResponseMessage(data.message || "Something went wrong");
+                if (res.ok) {
+                    console.log(data)
+                    setUser(JSON.parse(decodeURIComponent(userData)));
+                    router.push('/');    
+                };
+            };
         } catch (err) {
-            console.error("Fetch failed:", err);
-            setServerResponseText("Server error: Unable to connect. Please try again later.");
+            setServerResponseMessage("Server error: Unable to connect. Please try again later.");
         }
 
     }
 
   return (
     <Layout>
-      <div className="h-screen w-[30%] mx-auto flex flex-col items-center justify-center">
+      <div className="h-screen w-[17.5rem] box-content mx-auto flex flex-col items-center justify-center">
         <form
           onSubmit={handleLoginSubmit}
-          className="bg-[#2563EB] text-white border border-black/20 border-2 rounded-md box-content px-[2%] py-[20px] w-[100%] flex flex-col items-center justify-center gap-3"
+          className="bg-[#2563EB] w-[100%] text-white border border-black/20 border-2 rounded-md box-content px-[0.5rem] py-[20px] flex flex-col items-center justify-center gap-3"
         >
             <p className="font-bold my-[10px]">
                 Enter login details
@@ -79,12 +92,12 @@ export default function Login() {
             />
             </label>
 
-            {serverResponseText && 
+            {serverResponseMessage && 
             <p 
                 id='error-text'
                 className='text-center text-slate-200 p-[3%] mx-[10%] rounded-md bg-[black]/50'
             >
-                {serverResponseText}    
+                {serverResponseMessage}    
             </p>}
 
             <button 
@@ -94,7 +107,7 @@ export default function Login() {
             </button>
 
         </form>
-        <Link href='/register' className="flex flex-row justify-center mt-[10px] p-[10px] text-white font-bold px-[2%] rounded-md box-content bg-[orange] w-[100%]">
+        <Link href='/register' className="w-[100%] px-[0.5rem] border-2 border-[rgb(255,145,0)] flex flex-row justify-center mt-[10px] p-[10px] text-white font-bold px-[2%] rounded-md box-content bg-[orange]">
             Create a new account
         </Link>
       </div>

@@ -4,19 +4,21 @@ import Layout from './Layout.tsx';
 import PhonesScrollList from '../components/PhonesScrollDiv';
 import TabletsScrollList from '../components/TabletsScrollDiv';
 
-export default function Home() {
+
+export default function Home({ userinfo }) {
+
   return (
-      <Layout>
+    <Layout>
           <div className={styles.root}>
           <div className={styles.heroMobileDiv}>
             <img 
               src='/s25-ultra.png'
               className={styles.heroMobileImage}
-            />
+              />
             <img 
               src='/phone-hero-display.jpg'
               className={styles.heroDesktopImage}
-            />
+              />
             <h1 style={{
               textAlign: 'center'
             }}>

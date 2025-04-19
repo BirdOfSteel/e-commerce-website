@@ -1,12 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from "../components/Header";
 import styles from '../styles/Layout.module.css';
-import Link from 'next/link';
 
 export default function Layout({ children }) {
   const [ isMenuOpen, setIsMenuOpen ] = useState(false);
-
-
+  
   return (
     <>
       <Header 
@@ -14,7 +12,8 @@ export default function Layout({ children }) {
           setIsMenuOpen(!isMenuOpen)
         }}
       />
-      {children}
+       {children}
+      <div className={styles.backgroundPattern} />
     </>
   );
 }
