@@ -165,7 +165,7 @@ export default function BasketList() {
                 </div>
                     : 
                 shoppingBasket.length > 0 ? 
-                    <div>
+                    <>
                         {generateBasketList()}
                         <div>
                             <div className='flex flex-col mt-[2rem] text-[rgb(48,48,48)]'>
@@ -189,7 +189,7 @@ export default function BasketList() {
                                 Proceed to checkout
                             </p>
                         </div> 
-                    </div>
+                    </>
                         :
                     <p className='font-bold'>Basket is empty</p>
             }

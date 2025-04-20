@@ -9,7 +9,6 @@ export function ShoppingBasketProvider({ children }) {
         if (typeof window !== 'undefined') { // checks window to see if we're in browser environment
             const localStorageBasket = localStorage.getItem('basket');
             if (localStorageBasket !== 'undefined') { 
-                console.log(localStorageBasket)
                 setShoppingBasket(JSON.parse(localStorageBasket));
             }
         }

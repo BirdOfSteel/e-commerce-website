@@ -5,7 +5,7 @@ export default async function validateAuth(req) {
     
     // Check if session token exists
     if (!sessionCookie) {
-        return { isAuthenticated: false, message: 'No session token found, please log in again.'};
+        return { isAuthenticated: false, message: 'You must be logged in to access this page'};
     }
 
     try {

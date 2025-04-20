@@ -11,11 +11,10 @@
         align-items: center;
         flex-direction: column;
         padding: 1rem 0rem;
-        background: red;
     }
     
         .basketItemDiv {
-            width: 180px;
+            width: 200px;
             height: 18rem;
             border: 1px solid rgb(0,0,0,0.3);
             border-radius: 5px;

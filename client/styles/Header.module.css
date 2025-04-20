@@ -7,8 +7,9 @@
     padding: 0 10px;
     position: fixed;
     top: 0;
-    z-index: 999;
+    z-index: 99;
 }
+
 
     .routes {
         margin-left: 2rem;
@@ -21,14 +22,16 @@
         font-weight: bold;
     }
 
-
-@media (min-width: 1200px) {
-    .headerLinks {
-        margin: 0 auto;
+@media (min-width: 720px) {
+    .header {
+        width: min-content;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, 0);
+        border-radius: 0 0 6px 6px;
     }
-    
-    .headerIconDiv {
-        width: 5rem;
-        margin-right: 24vw;
+
+    .header > div {
+        padding: 0 1rem;
     }
 }

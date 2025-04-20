@@ -57,7 +57,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // MAKE FRONTEND OR BACKEND CHECK FOR SERVER RESPONSE. CRASH CURRENTLY OCCURS IF SERVER IS DOWN.
 app.get('/', (req, res) => {
-    res.send(`API is online`)
+    res.send(`Server is online`)
 })
 
 // phones data
