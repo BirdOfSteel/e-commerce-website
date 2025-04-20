@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import { ShoppingBasketContext } from "../context/shoppingBasketProvider";
 import { Product } from "../types/types";
-import { BasketObject } from "../types/types";
+import { BasketObjectType } from "../types/types";
 
 export function useAddToBasket() {
     const { setShoppingBasket } = useContext(ShoppingBasketContext);
 
     const addToBasket = (productObject: Product) => {
-        setShoppingBasket((prevBasket: BasketObject[]) => {
+        setShoppingBasket((prevBasket: BasketObjectType[]) => {
             // creates array of IDs in shopping basket
             const prevBasketIDs = prevBasket.map((object) => { 
                 return object.id
@@ -24,18 +24,12 @@ export function useAddToBasket() {
                                 quantity: objectInBasket.quantity + 1
                             }
 
-                            const subtotal = 
-                                (updatedObjectInBasket.price * updatedObjectInBasket.quantity).toLocaleString('en', {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                });
-
                             return {
                                 ...updatedObjectInBasket,
-                                subtotal: subtotal
-                            }
+                                subtotal: Number(updatedObjectInBasket.price * updatedObjectInBasket.quantity)
+                            };
                         } else { // else, do not modify the object.
-                            return objectInBasket
+                            return objectInBasket;
                         }
                     })
     
@@ -47,10 +41,10 @@ export function useAddToBasket() {
                 return [...prevBasket, {
                     id: productObject.product_id,
                     name: productObject.name,
-                    price: productObject.price,
+                    price: Number(productObject.price),
                     img_src: productObject.filepath,
                     quantity: 1,
-                    subtotal: productObject.price
+                    subtotal: Number(productObject.price)
                 }]
             }
         })

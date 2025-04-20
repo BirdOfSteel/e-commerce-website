@@ -1,7 +1,12 @@
-import { NextResponse } from 'next/server';
-import validateAuth from './utils/middleware/validateAuth.tsx';
+import validateAuth from './utils/middleware/validateAuth';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function middleware(req) {
+interface AuthValidationResult {
+    isAuthenticated: boolean;
+    message: string;
+}
+
+export async function middleware(req: NextRequest): Promise<NextResponse> {
     const { pathname } = req.nextUrl;
     const response = NextResponse.next();
     
@@ -12,10 +17,10 @@ export async function middleware(req) {
         /\.(png|jpg|jpeg|gif|svg|ico|webp|ttf|woff|woff2|eot|otf)$/.test(pathname) // assets in public
     ) {
         return NextResponse.next();
-    }
+    };
     
     try {
-        const { isAuthenticated, message } = await validateAuth(req);
+        const { isAuthenticated, message }: AuthValidationResult = await validateAuth(req);
         
         if (!isAuthenticated) {
             const redirectUrl = new URL('/login', req.url);

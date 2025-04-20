@@ -1,18 +1,13 @@
 export default function generateRandomProfileColour() {
     const colourOptions = [
-        "#F4A261",
-        "#E9C46A",
-        "#A8DADC",
-        "#B5E48C",
-        "#FDCBCA",
-        "#CDB4DB",
-        "#90CAF9",
-        "#FFE0AC",
-        "#D3EBCD",
-        "#FFDAC1",
-        "#D1C4E9",
-        "#B2DFDB"
-    ];
+        '#EA4335',
+        '#FBBC05',
+        '#34A853',
+        '#A142F4',
+        '#FF6D01',
+        '#F06292',
+        '#5E35B1'
+    ]
 
     const randomNumber = Math.floor(Math.random() * colourOptions.length);
 

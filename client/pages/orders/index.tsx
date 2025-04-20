@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import Layout from '../Layout.tsx';
+import Layout from '../Layout';
 
 export default function Orders() {
     const [ serverResponseMessage, setServerResponseMessage ] = useState(null);
     const [ orderHistory, setOrderHistory ] = useState([]); 
 
-    useEffect(() => {
+    useEffect(() => { // on entering orders page, fetches order history
         async function fetchOrderHistory() {
             try {
                 const res = await fetch(

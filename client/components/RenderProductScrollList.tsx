@@ -20,7 +20,6 @@ export default function RenderProductScrollListings({data, isLoading, error}: Re
                             alt={productObject.name}
                             className={styles.scrollProductImage}
                         />
-        
                         <div className={styles.scrollProductInfoDiv}>
                             <div className={styles.infoDivLeftDiv}>
                                 <p className={styles.scrollProductLiName}>

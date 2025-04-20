@@ -1,15 +1,15 @@
 import styles from '../styles/Home.module.css';
-import Layout from './Layout.tsx';
+import Layout from './Layout';
 
 import PhonesScrollList from '../components/PhonesScrollDiv';
 import TabletsScrollList from '../components/TabletsScrollDiv';
 
 
-export default function Home({ userinfo }) {
+export default function Home() {
 
   return (
     <Layout>
-          <div className={styles.root}>
+        <div className={styles.root}>
           <div className={styles.heroMobileDiv}>
             <img 
               src='/s25-ultra.png'

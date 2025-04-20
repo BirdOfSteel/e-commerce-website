@@ -1,6 +1,5 @@
-import Layout from '../Layout.tsx';
+import Layout from '../Layout';
 import styles from '../../styles/Basket.module.css';
-
 import BasketList from './BasketList'
 
 

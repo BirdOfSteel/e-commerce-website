@@ -1,20 +1,27 @@
 import { useContext, useState, useEffect } from 'react';
 import styles from '../../styles/Basket.module.css';
 import { ShoppingBasketContext } from '../../context/shoppingBasketProvider';
-import { BasketObject } from '../../types/types';
+import { BasketObjectType, ServerResponse } from '../../types/types';
 import getCurrentDate from '../../utils/getCurrentDate'
+
+function priceNumberToString(price: number) {
+    return price.toLocaleString('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
 
 export default function BasketList() {
     const { shoppingBasket, setShoppingBasket } = useContext(ShoppingBasketContext);
     const [ hasCheckedOut, setHasCheckedOut ] = useState(false);
-    const [ serverResponseMessage, setServerResponseMessage ] = useState(null);
-    const [ basketTotal, setBasketTotal ] = useState(0);
- 
-    useEffect(() => {
-        const basketTotalValue = shoppingBasket.reduce((totalValue, basketItem) =>{
-            totalValue += Number(basketItem.subtotal.replace(/,/g, ''));
-            return totalValue
-        }, 0)
+    const [ serverResponseMessage, setServerResponseMessage ] = useState<ServerResponse | null>(null);
+    const [ basketTotal, setBasketTotal ] = useState<number>(0);
+    
+    useEffect(() => { // on entering basket page, calculates total value
+        const basketTotalValue: number = 
+            shoppingBasket.reduce((totalValue: number, basketItem: BasketObjectType) => {
+                return totalValue += basketItem.subtotal;
+        },  0);
         setBasketTotal(basketTotalValue);
     }, [shoppingBasket])
 
@@ -45,12 +52,14 @@ export default function BasketList() {
                     setShoppingBasket([]);
                     setHasCheckedOut(true);                }
             } catch (err) {
-                setServerResponseMessage("Server error: Unable to connect. Please try again later.");
+                setServerResponseMessage({
+                    message: "Server error: Unable to connect. Please try again later."
+                });
             }
         }
     }
 
-    function updateQuantity(objectInBasket: BasketObject, action:string) {
+    function updateQuantity(objectInBasket: BasketObjectType, action:string) {
         let newQuantity: number = null;
 
         switch (action) {
@@ -70,23 +79,16 @@ export default function BasketList() {
         const action: string = e.target.id;
 
         let updatedBasket = 
-                prevBasket.map((objectInBasket) => {
-                    console.log("1")
+                prevBasket.map((objectInBasket: BasketObjectType) => {
                     if (objectInBasket.id === productObject.id) {
                         const updatedObjectInBasket = {
                             ...objectInBasket,
                             quantity: updateQuantity(objectInBasket, action)
                         }
 
-                        let subtotal = 
-                            (updatedObjectInBasket.price * updatedObjectInBasket.quantity).toLocaleString('en', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                            });
-
                         return {
                             ...updatedObjectInBasket,
-                            subtotal: subtotal
+                            subtotal: updatedObjectInBasket.price * updatedObjectInBasket.quantity
                         };
                     } else {
                         return objectInBasket
@@ -110,7 +112,7 @@ export default function BasketList() {
     
     function generateBasketList() {
 
-        return shoppingBasket.map((basketObject, index) => {
+        return shoppingBasket.map((basketObject: BasketObjectType, index) => {
             return (
                 <div 
                     className={styles.basketItemDiv}
@@ -142,8 +144,8 @@ export default function BasketList() {
                     </div>
                     <div className={styles.basketItemInfoDiv}>
                         <p>{basketObject.name}</p>
-                        <p>£{basketObject.price}</p>
-                        <p className='mt-[1rem]'>Subtotal: £{basketObject.subtotal}</p>
+                        <p>£{priceNumberToString(basketObject.price)}</p>
+                        <p className='mt-[1rem]'>Subtotal: £{priceNumberToString(basketObject.subtotal)}</p>
                     </div>
                 </div>
             )
@@ -178,7 +180,7 @@ export default function BasketList() {
                                 </p>
                             </div>
                             <p>
-                                {serverResponseMessage}
+                                {serverResponseMessage?.message}
                             </p>
                             <p 
                                 className='mt-[1rem] cursor-pointer rounded-md text-white font-bold bg-[orange] border-2 border-[rgb(255,145,0)] text-center py-[0.75rem]'

@@ -1,23 +1,25 @@
 import { useState } from "react";
-import Layout from '../Layout.tsx'
+import Layout from '../Layout'
 import Link from "next/link";
+import { RegistrationFormObject, ServerResponse } from '../../types/types'
 
 export default function Register() {
     const [serverResponseText, setServerResponseText] = useState(null);
 
-    async function handleRegisterSubmit(event) {
+    // handles account registration
+    async function handleRegisterSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
         event.preventDefault();
-        const formData = new FormData(event.target);
+        const formData = new FormData(event.target as HTMLFormElement);
 
         const email = formData.get('email');
         const name = formData.get('name');
         const password = formData.get('password');
 
-        const formObject = {
-            email: email.toLowerCase(),
+        const formObject: RegistrationFormObject = {
+            email: typeof email === 'string' ? email.toLowerCase() : '',
             name: name,
             password: password
-        }
+        };
 
         try {
             setServerResponseText(null);
@@ -27,9 +29,9 @@ export default function Register() {
                   "Content-Type": "application/json"
                 },
                 body: JSON.stringify(formObject)
-            }); // sends form data
+            }); // form data is sent
 
-            const data = await res.json();
+            const data: ServerResponse = await res.json();
 
             if (data) {
                 setServerResponseText(data.message || "Something went wrong");
@@ -39,15 +41,14 @@ export default function Register() {
             console.error("Fetch failed:", err);
             setServerResponseText("Server error: Unable to connect. Please try again later.");
         }
-
     }
 
   return (
     <Layout>
-      <div className="h-screen w-screen flex flex-col items-center justify-center">
+      <div className="px-[10%] min-w-[280px] max-w-[320px] h-[100%] box-content mx-auto flex flex-col items-center justify-center">
         <form
           onSubmit={handleRegisterSubmit}
-          className="bg-[#2563EB] text-white border border-black/20 border-2 rounded-md box-content px-[2%] py-[20px] w-[30%] flex flex-col items-center justify-center gap-3"
+          className="py-[20px] bg-[#2563EB] h-[100%] gap-5 w-[100%] text-white border border-black/20 border-2 rounded-md box-content flex flex-col items-center justify-center"
         >
             <p className="font-bold my-[10px]">
                 Register a new account
@@ -95,7 +96,7 @@ export default function Register() {
             </button>
 
         </form>
-        <Link href='/login' className="flex w-[30%] flex-row justify-center mt-[10px] p-[10px] text-white font-bold px-[2%] rounded-md box-content bg-[orange]">
+        <Link href='/login' className="bg-[rgb(255,145,0)] transition transform hover:scale-105 py-[0.75rem] w-[100%] border-[rgb(255,145,0)] border-2 flex flex-row justify-center mt-[10px] text-white font-bold rounded-md box-content">
             Back to log in
         </Link>
       </div>

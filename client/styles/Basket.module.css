@@ -11,12 +11,13 @@
         align-items: center;
         flex-direction: column;
         padding: 1rem 0rem;
+        background: red;
     }
     
         .basketItemDiv {
             width: 180px;
             height: 18rem;
-            border: 1px solid black;
+            border: 1px solid rgb(0,0,0,0.3);
             border-radius: 5px;
             display: flex;
             align-items: center;
@@ -74,5 +75,18 @@
             }
 
     
-    
-    
+
+@media(min-width:500px) {
+}
+
+@media(min-width:700px) {
+}
+
+@media(min-width:920px) {
+}
+
+@media(min-width:1280px) {
+}
+
+@media(min-width:1500px) {
+}
