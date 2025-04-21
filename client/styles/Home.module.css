@@ -103,15 +103,16 @@
                         align-items: start;
                         width: 100%;
                     }
-                        .scrollProductLiPrice {
-                            color: rgb(32, 32, 32);
-                            font-size: clamp(16px, 2.5vw, 20px);
-                        }
-
+                    
                         .scrollProductLiName {
                             width: 100%;
                             font-weight: bold;
-                            font-size: clamp(17px, 1.5vw, 18px);
+                            font-size: clamp(19px, 1.5vw, 18px);
+                        }
+
+                        .scrollProductLiPrice {
+                            color: rgb(32, 32, 32);
+                            font-size: clamp(18px, 2.5vw, 20px);
                         }
                     
                     .scrollProductLiCartIcon {

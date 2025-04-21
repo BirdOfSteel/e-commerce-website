@@ -7,7 +7,6 @@ Deployment – Live demo + clean README
 
 
 
-align profile menu list to the right
 consider rate limiting and returning an error message if possible
 
 add the rest of the product entries

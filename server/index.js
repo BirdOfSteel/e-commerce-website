@@ -92,8 +92,8 @@ app.get('/tablets', async (req, res) => {
 
 app.get('/get-order-history', async (req, res) => {
     try {
-        const sessionToken = req.cookies.session_token;
         const userinfoCookie = req.cookies.userinfo;
+        
         if (userinfoCookie) {
             const email = JSON.parse(userinfoCookie).email;
 
@@ -128,7 +128,6 @@ app.post('/add-to-order-history', async (req, res) => {
             if (req.body.shoppingBasket && req.cookies.userinfo && req.body.shoppingBasket.length > 0) {
                 const email = JSON.parse(req.cookies.userinfo).email;
                 const shoppingBasket = JSON.stringify({order: req.body});
-                console.log(shoppingBasket)
 
                 await pool.query(`
                     INSERT INTO orders(email, order_history)
@@ -201,13 +200,13 @@ app.post('/login', async (req, res) => {
                 await redis.expire(newSessionToken, 43200); // 43200 seconds is 12 hours
                 await pool.query('UPDATE users SET session_token=$1 WHERE email=$2',[newSessionToken, req.body.email]);
 
-
+                const cookieExpiry = 1000 * 43200; // 12 hours in milliseconds
                 // !!!!! VERIFY COOKIES ARE STILL SENT OVER IN PRODUCTION
                 res.cookie('session_token', newSessionToken, { // secure cookie with session_token info
                     httpOnly: isProd ? true : false,
                     secure: isProd ? true : false,
                     sameSite: isProd ? 'None' : 'Lax',
-                    maxAge: 1000 * 43200 // 12 hours in milliseconds
+                    maxAge: cookieExpiry
                 })
                 .cookie('userinfo', JSON.stringify({ // public user info cookie
                     email: userInDB.email,
@@ -217,7 +216,7 @@ app.post('/login', async (req, res) => {
                     httpOnly: false,
                     secure: false,
                     sameSite: 'Lax',
-                    maxAge: 1000 * 60 * 60 * 24
+                    maxAge: cookieExpiry
                 })
                 .status(200).json({
                     message: 'Success! Logging in...'
@@ -262,8 +261,19 @@ app.post('/register', async (req, res) => {
             const hashedPassword = await bcrypt.hash(req.body.password, parseInt(process.env.BCRYPT_SALT_ROUNDS));
             const profileColour = generateRandomProfileColour();
 
-            await pool.query(`INSERT INTO users (email, username, password_hash, profile_colour) VALUES($1,$2,$3,$4)`, [req.body.email, req.body.name, hashedPassword, profileColour]);
-                    
+            await pool.query(`
+                INSERT INTO users(email, username, password_hash, profile_colour)
+                VALUES($1,$2,$3,$4)`, 
+                [req.body.email, req.body.name, hashedPassword, profileColour]
+            ); // add user to users database
+
+            await pool.query(`
+                INSERT INTO orders(email, order_history)
+                VALUES($1, '[]'::jsonb)
+                ON CONFLICT (email) DO NOTHING`,
+                [req.body.email]
+            ); // adds email to 'orders' table, unless it exists    
+
             return res.status(200).json({
                 message: "Account created!"
             });

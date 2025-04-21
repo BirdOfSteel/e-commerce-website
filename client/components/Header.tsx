@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 export default function Header() {
   const router = useRouter();
   const { user, setUser } = useAuth();
-  const [ showProfileMenu, setShowProfileMenu ] = useState(true);
+  const [ showProfileMenu, setShowProfileMenu ] = useState(false);
   
   async function handleLogout() {
     const res = await fetch('http://localhost:3001/logout', {
@@ -24,7 +24,7 @@ export default function Header() {
   return (
     <>
     <div className='w-[100vw] h-[15px] fixed top-0 bg-[#2563EB] z-[99]' />
-    <header className={styles.header}>
+    <header className={`${styles.header} 'h-[60px] w-[100%] bg-[#2563EB] flex items-center px-[10px] fixed top-0 z-[99]`}>
         <div className='flex [&>a]:mr-[clamp(12px,2vw,30px)] text-[clamp(20px,2.3vw,22px)] ml-[1vw] text-white font-bold select-none'>
           <Link 
             href='/' 
@@ -55,13 +55,13 @@ export default function Header() {
 
           {user ?
             <div className='h-[100%] flex flex-col justify-center' onClick={() => setShowProfileMenu(!showProfileMenu)} onMouseEnter={() => setShowProfileMenu(true)} onMouseLeave={() => setShowProfileMenu(false)}>
-              <div className='cursor-pointer ml-[1vw] flex flex-col items-end right-0'>
-                <div style={{backgroundColor: user.profileColour}} className={`w-[37.5px] h-[37.5px] border-[2px] border-[white] select-none text-lg my-auto rounded-full flex justify-center`}>
+              <div className='ml-[1vw] flex flex-col items-end right-0'>
+                <div style={{backgroundColor: user.profileColour}} className={`w-[37.5px] h-[37.5px] ml-[0.5rem] border-[2px] border-[white] cursor-pointer select-none text-lg my-auto rounded-full flex justify-center`}>
                   <p className='m-auto text-[white] font-bold text-shadow'>{user.name[0].toUpperCase()}</p>
                 </div>
-                <ul className={`${showProfileMenu ? 'opacity-100' : 'opacity-0'} px-[5%] text-center bg-[red] max-w-min min-w-max w-min select-none [&>li]:my-[0.8rem] rounded-bl-lg rounded-br-lg transition-opacity duration-200 ease-in absolute top-[100%] bg-[rgb(30,64,175)] text-[#fff]`}>
+                <ul className={`${showProfileMenu ? 'opacity-100' : 'opacity-0'} px-[5%] font-bold text-center max-w-min min-w-max w-min select-none [&>li]:my-[0.8rem] rounded-bl-lg rounded-br-lg transition-opacity duration-200 ease-in absolute top-[100%] bg-[rgb(30,64,175)] text-[#fff]`}>
                   <li 
-                    className='transition duration-150 ease-in hover:text-[rgb(255,153,0)] cursor-pointer active:text-[rgb(255,153,0)] active:duration-0'
+                    className='transition duration-150 ease-in hover:text-[rgb(255,153,0)] active:text-[rgb(255,153,0)] active:duration-0'
                   >
                     <Link href='/orders'>
                       Orders
@@ -69,7 +69,7 @@ export default function Header() {
                   </li>
                   <li 
                     onClick={() => handleLogout()} 
-                    className='transition duration-150 ease-in hover:text-[rgb(255,153,0)] font-bold cursor-pointer active:text-[rgb(255,153,0)] active:duration-0'
+                    className='transition duration-150 ease-in hover:text-[rgb(255,153,0)] cursor-pointer active:text-[rgb(255,153,0)] active:duration-0'
                   >
                     Logout
                   </li>

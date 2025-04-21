@@ -44,7 +44,7 @@ export default function RenderProductScrollListings({ data, isLoading, error }: 
                                 <p className={styles.scrollProductLiPrice}>{'£' + productObject.price}</p>
                             </div>
                             <svg 
-                                className='w-[clamp(28px,5vw,35px)] h-[clamp(28px,5vw,35px)] mt-auto active:stroke-[rgb(255,165,0)] hover:stroke-[rgb(255,165,0)] active:scale-105 hover:scale-105 cursor-pointer transition duration-200 stroke-[black]' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.25" stroke="currentColor"
+                                className='w-[clamp(35px,5vw,45px)] h-[clamp(35px,5vw,45px)] mt-auto active:stroke-[rgb(255,165,0)] hover:stroke-[rgb(255,165,0)] active:scale-105 hover:scale-105 cursor-pointer transition duration-200 stroke-[black]' xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.25" stroke="currentColor"
                                 aria-label='Add to cart'
                                 onClick={(e) => addToBasket(productObject)}
                             >

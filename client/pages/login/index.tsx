@@ -104,7 +104,7 @@ export default function Login() {
                 </button>
 
             </form>
-        <Link href='/register' className="bg-[rgb(255,145,0)] transition transform hover:scale-105 py-[0.75rem] w-[100%] border-2 flex flex-row justify-center mt-[10px] text-white font-bold rounded-md box-content">
+        <Link href='/register' className="bg-[rgb(255,145,0)] transition transform hover:scale-105 py-[0.75rem] w-[100%] border-2 border-[rgb(255,125,0)] flex flex-row justify-center mt-[10px] text-white font-bold rounded-md box-content">
             Create a new account
         </Link>
       </div>

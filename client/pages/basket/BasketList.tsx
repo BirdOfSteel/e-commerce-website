@@ -1,15 +1,8 @@
 import { useContext, useState, useEffect } from 'react';
-import styles from '../../styles/Basket.module.css';
 import { ShoppingBasketContext } from '../../context/shoppingBasketProvider';
 import { BasketObjectType, ServerResponse } from '../../types/types';
-import getCurrentDate from '../../utils/getCurrentDate'
-
-function priceNumberToString(price: number) {
-    return price.toLocaleString('en', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-}
+import getCurrentDate from '../../utils/getCurrentDate';
+import priceNumberToString from '../../utils/priceNumberToString';
 
 export default function BasketList() {
     const { shoppingBasket, setShoppingBasket } = useContext(ShoppingBasketContext);
@@ -115,21 +108,23 @@ export default function BasketList() {
         return shoppingBasket.map((basketObject: BasketObjectType, index) => {
             return (
                 <div 
-                    className={styles.basketItemDiv}
+                    className='max-w-[14rem] mb-[1rem] border-[2px] border-[rgb(0,0,0,0.3)] rounded-md p-[1rem] items-center jusify-center'
                     key={basketObject.id}    
                 >
-                    <img src={basketObject.img_src} className={styles.basketItemImg}/>
-                    <div className={styles.basketItemQuantityDiv} data-object={JSON.stringify(basketObject)}>
+                    <img src={basketObject.img_src} className='mb-[1rem] w-[100%]'/>
+                    <div className='flex flex-row w-[75%] justify-between' data-object={JSON.stringify(basketObject)}>
                         <p 
-                            className={styles.quantityButton}
+                            className='bg-[white] border-[rgb(0,0,0,0.3)] select-none transition-transform duration-250 ease-in-out active:scale-105 hover:scale-105 active:border-[rgb(255,153,0)] hover:border-[rgb(255,153,0)] hover:border-[2px] border-[1px]  w-[30px] h-[30px] cursor-pointer flex justify-center items-center rounded-md'
                             onClick={(e) => changeProductQuantity(e)}
                             id='subtract'
                         >
                             -
                         </p>
-                        <p>{basketObject.quantity}</p>
+                        <p className='flex items-center justify-center font-bold'>
+                            {basketObject.quantity}
+                        </p>
                         <p 
-                            className={styles.quantityButton}
+                            className='bg-[white] border-[rgb(0,0,0,0.3)] select-none transition-transform duration-100 ease-in-out active:scale-105 hover:scale-105 active:border-[rgb(255,153,0)] hover:border-[rgb(255,153,0)] hover:border-[2px] border-[1px]  w-[30px] h-[30px] cursor-pointer flex justify-center items-center rounded-md'
                             onClick={(e) => changeProductQuantity(e)}
                             id='add'
                         >
@@ -137,13 +132,13 @@ export default function BasketList() {
                         </p>
                         <img 
                             src={'/bin-icon.png'} 
-                            className={styles.binIcon}
+                            className='bg-[white] border-[rgb(0,0,0,0.3)] p-[5px] select-none transition-transform duration-100 ease-in-out active:scale-105 hover:scale-105 active:border-[rgb(255,153,0)] hover:border-[rgb(255,153,0)] hover:border-[2px] border-[1px]  w-[30px] h-[30px] cursor-pointer flex justify-center items-center rounded-md'
                             id='delete'
                             onClick={(e) => changeProductQuantity(e)}
                         />
                     </div>
-                    <div className={styles.basketItemInfoDiv}>
-                        <p>{basketObject.name}</p>
+                    <div className='flex flex-col mt-[1rem] text-[clamp(1rem,1vw,2rem)]'>
+                        <p className='font-bold'>{basketObject.name}</p>
                         <p>£{priceNumberToString(basketObject.price)}</p>
                         <p className='mt-[1rem]'>Subtotal: £{priceNumberToString(basketObject.subtotal)}</p>
                     </div>
@@ -153,9 +148,9 @@ export default function BasketList() {
     }
 
     return (
-        <div className={styles.basketDiv}>
+        <div className='w-[100%] grid grid- items-center justify-center'>
             { hasCheckedOut ?
-                <div className='mx-auto mt-[25vh] text-center px-[20%] font-bold'>
+                <div className='mx-auto mt-[25vh] text-center font-bold'>
                     <p className='mb-[2rem]'>
                         Thank you for your purchase!
                     </p>
@@ -168,7 +163,7 @@ export default function BasketList() {
                     <>
                         {generateBasketList()}
                         <div>
-                            <div className='flex flex-col mt-[2rem] text-[rgb(48,48,48)]'>
+                            <div className='text-[clamp(1rem,1vw,2rem)] flex flex-col mt-[2rem] text-[rgb(48,48,48)]'>
                                 <p className='text-[dark-grey] font-bold'>
                                     Total: &nbsp;
                                 </p>
@@ -183,7 +178,7 @@ export default function BasketList() {
                                 {serverResponseMessage?.message}
                             </p>
                             <p 
-                                className='mt-[1rem] cursor-pointer rounded-md text-white font-bold bg-[orange] border-2 border-[rgb(255,145,0)] text-center py-[0.75rem]'
+                                className='hover:scale-105 duration-105 transition-transform mt-[1rem] text-[clamp(1rem,1vw,1.15rem)] cursor-pointer rounded-md text-white font-bold bg-[rgb(255,153,0)] border-2 border-[rgb(255,145,0)] text-center py-[0.75rem]'
                                 onClick={() => handleCheckout()}
                             >
                                 Proceed to checkout

@@ -96,7 +96,7 @@ export default function Register() {
             </button>
 
         </form>
-        <Link href='/login' className="bg-[rgb(255,145,0)] transition transform hover:scale-105 py-[0.75rem] w-[100%] border-[rgb(255,145,0)] border-2 flex flex-row justify-center mt-[10px] text-white font-bold rounded-md box-content">
+        <Link href='/login' className="bg-[rgb(255,145,0)] transition transform hover:scale-105 py-[0.75rem] w-[100%] border-[rgb(255,125,0)] border-2 flex flex-row justify-center mt-[10px] text-white font-bold rounded-md box-content">
             Back to log in
         </Link>
       </div>

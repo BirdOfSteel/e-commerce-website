@@ -1,5 +1,4 @@
 import Layout from '../Layout';
-import styles from '../../styles/Basket.module.css';
 import BasketList from './BasketList'
 
 
@@ -7,7 +6,7 @@ export default function Basket() {
     
     return (
         <Layout>
-            <div className={styles.pageDiv}>
+            <div className='w-[100%]'>
                 <BasketList />   
             </div>  
         </Layout>
