@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ShoppingBasketContext } from "../context/shoppingBasketProvider";
+import { ShoppingBasketContext } from "../context/ShoppingBasketProvider";
 import { Product } from "../types/types";
 import { BasketObjectType } from "../types/types";
 

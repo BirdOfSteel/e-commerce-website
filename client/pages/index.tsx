@@ -4,7 +4,6 @@ import Layout from './Layout';
 import PhonesScrollList from '../components/PhonesScrollDiv';
 import TabletsScrollList from '../components/TabletsScrollDiv';
 
-
 export default function Home() {
 
   return (

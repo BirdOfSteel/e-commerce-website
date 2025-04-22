@@ -1,15 +1,52 @@
 import styles from '../styles/ProductsPage.module.css';
+import { useState, useEffect } from 'react';
 import { RenderListingsProps } from '../types/types';
 import { useAddToBasket } from '../hooks/useAddToBasket';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-export default function RenderProductPageListings({ data, isLoading, error }: RenderListingsProps) {
+export default function RenderProductPageListings({ data, isLoading, error, sortingMethod }: RenderListingsProps) {
     const addToBasket = useAddToBasket();
+    const [ productList, setProductList ] = useState(data);
 
     if (error) return <p>Error: {error.message}</p>
 
+    // triggers sorting of product list
+    useEffect(() => {
+        sortProductList();
+    },[sortingMethod, data])
+    
 
+    // handles sorting fetched product list data
+    function sortProductList() {
+        let updatedProductList = null;
+
+        if (sortingMethod === 'Featured') {
+            updatedProductList = data;
+        } 
+
+        else if (sortingMethod === 'Low to High') {
+            const lowToHigh = data.toSorted((a, b) => {
+                return Number(a.price) - Number(b.price); 
+            });
+            
+            updatedProductList = lowToHigh;
+        } 
+        
+        else if (sortingMethod === 'High to Low') {
+            const highToLow = data.toSorted((a, b) => {
+                return Number(b.price) - Number(a.price); 
+            });
+            
+            updatedProductList = highToLow;
+        } 
+        
+        else {
+            updatedProductList = data;
+        }
+        setProductList(updatedProductList)
+    }
+    
     function ProductSkeleton() { // skeleton structure
         return (
             <li className={styles.productListItem}>
@@ -28,7 +65,6 @@ export default function RenderProductPageListings({ data, isLoading, error }: Re
         )
     };
 
-
     return (
         <>
         { isLoading ? 
@@ -40,7 +76,7 @@ export default function RenderProductPageListings({ data, isLoading, error }: Re
                 
                 : 
 
-            data.map((productObject) => ( // render listings
+            productList.map((productObject) => ( // render listings
                 <li key={productObject.product_id} className={styles.productListItem}>
                     <img src={productObject.filepath} alt={`${productObject.name} image`} />
                     <div className={styles.productListItemInfo}>

@@ -1,15 +1,13 @@
-Product Catalog – List, filter, search, and view product details
-    LOW PRIO (can be saved in state, use headless ui)
-
-Deployment – Live demo + clean README
-    FOR END OF PROJECT
+// Deployment – Live demo + clean README
+//     FOR END OF PROJECT
 
 
+// make basket animate scale/colour when item added to basket.
+//  maybe add number onto it, and have '9+' display on 10 or more items.
+// remove console.logs
+
+// consider rate limiting and returning an error message if possible
+// add item qty to basket
 
 
-consider rate limiting and returning an error message if possible
-
-add the rest of the product entries
-remove console.logs
-
-Upload frontend to netlify and backend to raspberry pi
+// Upload frontend to netlify and backend to raspberry pi

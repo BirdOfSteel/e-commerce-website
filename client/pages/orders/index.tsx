@@ -10,7 +10,7 @@ export default function Orders() {
         async function fetchOrderHistory() {
             try {
                 const res = await fetch(
-                    'http://localhost:3001/get-order-history', {
+                    'http://192.168.1.100:3001/get-order-history', {
                         method: 'GET',
                         credentials: 'include'
                     }
@@ -33,43 +33,50 @@ export default function Orders() {
     return (
         <Layout>
             <div className='max-w-min mx-[auto] flex flex-col items-center'>
-                { serverResponseMessage ?
+                {serverResponseMessage ? (
                     <p className='w-[100vw] text-center'>
                         {serverResponseMessage.message}
                     </p>
-                     :
+                ) : 
+                orderHistory.length > 0 ? ( // Check if orderHistory has items
                     orderHistory.map((orderObject, i) => {
                         const shoppingBasket = orderObject.order.shoppingBasket;
                         return (
-                            <div className='mb-[2.5rem] w-[100%] min-w-max text-[clamp(1rem,1.5vw,1.25rem)]'>
+                            <div
+                                key={i}
+                                className='mb-[2.5rem] w-[100%] min-w-max text-[clamp(1rem,1.5vw,1.25rem)]'
+                            >
                                 <div className='w-[100%] mb-[0.5rem] font-bold flex flex-row align-end justify-between'>
                                     <p className='mt-auto'>{orderObject.order.timestamp}</p>
                                     <p>Total: £{orderObject.order.total}</p>
                                 </div>
                                 <div className='p-[0.5rem] min-w-max border-2 border-[grey] rounded-md flex flex-col'>
-                                    {shoppingBasket.map((item) => {
-                                        console.log(item)
-                                        return (
-                                            <div className='[&:not(:last-child)]:border-b-[1px] [&:not(:last-child)]:border-[grey] px-[0.5rem] py-[1rem] mb-[0.5rem] max-h-min flex flex-row'>
-                                                <img 
-                                                    className='h-auto w-[clamp(6rem,10vw,9rem)] object-contain'
-                                                    src={item.img_src} 
-                                                    />
-                                                <div className='[&>p:not(:last-child)]:py-[0.3rem] ml-[1rem] max-h-min flex flex-col justify-end'>
-                                                    <p className='mb-[auto] pt-[10px] font-bold'>{item.name}</p>
-                                                    <p>Price each: £{priceNumberToString(item.price)}</p>
-                                                    <p>Qty: {item.quantity}</p>
-                                                    <p>Subtotal: £{priceNumberToString(item.subtotal)}</p>
-                                                </div>
+                                    {shoppingBasket.map((item, j) => (
+                                        <div
+                                            key={j}
+                                            className='[&:not(:last-child)]:border-b-[1px] [&:not(:last-child)]:border-[grey] px-[0.5rem] py-[1rem] mb-[0.5rem] max-h-min flex flex-row'
+                                        >
+                                            <img
+                                                className='h-auto w-[clamp(6rem,10vw,9rem)] object-contain'
+                                                src={item.img_src}
+                                                alt={item.name}
+                                            />
+                                            <div className='[&>p:not(:last-child)]:py-[0.3rem] ml-[1rem] max-h-min flex flex-col justify-end'>
+                                                <p className='mb-[auto] pt-[10px] font-bold'>{item.name}</p>
+                                                <p>Price each: £{priceNumberToString(item.price)}</p>
+                                                <p>Qty: {item.quantity}</p>
+                                                <p>Subtotal: £{priceNumberToString(item.subtotal)}</p>
                                             </div>
-                                        )
-                                    })}
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                        )
+                        );
                     })
-                }
+                ) : (
+                    <p className='w-[100vw] text-center font-bold'>No orders found.</p>
+                )}
             </div>
         </Layout>
-    )
+    );
 }

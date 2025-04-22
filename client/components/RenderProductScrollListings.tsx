@@ -1,10 +1,10 @@
 import styles from '../styles/Home.module.css';
-import { RenderListingsProps } from '../types/types';
+import { RenderScrollListingsProps } from '../types/types';
 import { useAddToBasket } from '../hooks/useAddToBasket';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-export default function RenderProductScrollListings({ data, isLoading, error }: RenderListingsProps) {
+export default function RenderProductScrollListings({ data, isLoading, error }: RenderScrollListingsProps) {
     const addToBasket = useAddToBasket();
 
     if (error) return <p>Error: {error.message}</p>;
@@ -25,7 +25,7 @@ export default function RenderProductScrollListings({ data, isLoading, error }: 
     }
 
     return (
-        <>
+        <>  
             {isLoading ? (
                 Array.from({ length: 10 }).map((_, index) => (
                     <ProductSkeleton key={index} />

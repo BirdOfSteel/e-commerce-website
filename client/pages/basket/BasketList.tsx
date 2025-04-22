@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { ShoppingBasketContext } from '../../context/shoppingBasketProvider';
+import { ShoppingBasketContext } from '../../context/ShoppingBasketProvider';
 import { BasketObjectType, ServerResponse } from '../../types/types';
 import getCurrentDate from '../../utils/getCurrentDate';
 import priceNumberToString from '../../utils/priceNumberToString';
@@ -21,7 +21,7 @@ export default function BasketList() {
     async function handleCheckout() {
         if (shoppingBasket.length > 0) {
             try {
-                const res = await fetch('http://localhost:3001/add-to-order-history', {
+                const res = await fetch('http://192.168.1.100:3001/add-to-order-history', {
                     method: "POST",
                     credentials: "include",
                     headers: {

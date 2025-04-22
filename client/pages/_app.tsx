@@ -1,7 +1,7 @@
 import "../styles/global.css";
 import NextApp, {AppContext, AppProps} from 'next/app';
 import { PagePropsType, CustomIncomingMessage } from '../types/types';
-import { ShoppingBasketProvider } from "../context/shoppingBasketProvider";
+import { ShoppingBasketProvider } from "../context/ShoppingBasketProvider";
 import { AuthProvider} from "../context/AuthContext";
 
 export default function App({ Component, pageProps }: AppProps<PagePropsType>) {

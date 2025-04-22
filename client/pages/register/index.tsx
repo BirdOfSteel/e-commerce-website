@@ -23,7 +23,7 @@ export default function Register() {
 
         try {
             setServerResponseText(null);
-            const res = await fetch('http://localhost:3001/register', {
+            const res = await fetch('http://192.168.1.100:3001/register', {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json"

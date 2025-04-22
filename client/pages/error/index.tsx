@@ -7,7 +7,7 @@ export default function Error() {
     useEffect(() => {
         async function pingServer() {
             try {
-                const res = await fetch('http://localhost:3001/', {
+                const res = await fetch('http://:3001/', {
                     method: 'GET'
                 });
     

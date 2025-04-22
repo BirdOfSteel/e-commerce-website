@@ -21,6 +21,13 @@ export type RenderListingsProps = {
     data: Product[];
     isLoading: boolean;
     error: Error | null;
+    sortingMethod: string;
+}
+
+export type RenderScrollListingsProps = {
+    data: Product[];
+    isLoading: boolean;
+    error: Error | null;
 }
 
 // object structure in basket
