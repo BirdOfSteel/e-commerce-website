@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import express from 'express';
 import path, {dirname} from 'path';
 import { fileURLToPath } from 'url';
-import fs from 'fs';
 import helmet from 'helmet';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
@@ -37,9 +36,13 @@ const pool = new Pool({
     database: process.env.POSTGRES_DATABASE
 });
 
+if (isProd) {
+    app.set('trust proxy', true);
+};
 
+console.log("CORS Origin loaded:", process.env.CORS_ORIGIN); // ? Add this
 app.use(cors({
-    origin: 'http://localhost:3000', // !! IMPORTANT! ALLOWS DATA TO MOVE BETWEEN FRONTEND AND BACKEND
+    origin: process.env.CORS_ORIGIN, // !! IMPORTANT! ALLOWS DATA TO MOVE BETWEEN FRONTEND AND BACKEND
     credentials: true
 }));
 app.use(helmet());
@@ -65,6 +68,7 @@ app.get('/phones', async (req, res) => {
     try {
         const queryResponse = await pool.query("SELECT * FROM products WHERE product_type = 'phone'");
         const hostURL = req.protocol + '://' + req.get('host');
+        console.log(req.protocol)
         const productData = completeImageFilePath(queryResponse.rows, hostURL);
         res.send(productData);
     } catch (err) {
@@ -214,8 +218,8 @@ app.post('/login', async (req, res) => {
                     profileColour: userInDB.profile_colour              
                 }), {
                     httpOnly: false,
-                    secure: false,
-                    sameSite: 'Lax',
+                    secure: isProd ? true : false,
+                    sameSite: isProd ? 'None' : 'Lax',
                     maxAge: cookieExpiry
                 })
                 .status(200).json({
@@ -313,6 +317,6 @@ app.post('/logout', async (req, res) => {
 });
 
 
-app.listen(port, () => {
+app.listen(3001, '0.0.0.0', () => {
     console.log(`Listening on port ${port}`);
 })
