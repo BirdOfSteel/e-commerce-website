@@ -50,6 +50,7 @@ export default function Login() {
             } else {
                 setServerResponseMessage(data.message)
                 let cookieArray = document.cookie.split('; ');
+                console.log(cookieArray)
                 let userData = cookieArray.find(row => row.startsWith('userinfo=')).replace('userinfo=', '');
                 setUser(JSON.parse(decodeURIComponent(userData)));
                 router.push('/');
