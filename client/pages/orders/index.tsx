@@ -10,7 +10,7 @@ export default function Orders() {
         async function fetchOrderHistory() {
             try {
                 const res = await fetch(
-                    'http://192.168.1.100:3001/get-order-history', {
+                    'https://ecommerce.amir-api.co.uk/get-order-history', {
                         method: 'GET',
                         credentials: 'include'
                     }

@@ -13,7 +13,7 @@ export default function Header() {
   const [ isBasketBouncing, setIsBasketBouncing ] = useState<boolean>(false);
 
   async function handleLogout() {
-    const res = await fetch('http://:3001/logout', {
+    const res = await fetch('https://ecommerce.amir-api.co.uk/logout', {
       method: 'POST',
       credentials: 'include'
     });

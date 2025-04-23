@@ -21,7 +21,7 @@ export default function BasketList() {
     async function handleCheckout() {
         if (shoppingBasket.length > 0) {
             try {
-                const res = await fetch('http://192.168.1.100:3001/add-to-order-history', {
+                const res = await fetch('https://ecommerce.amir-api.co.uk/add-to-order-history', {
                     method: "POST",
                     credentials: "include",
                     headers: {

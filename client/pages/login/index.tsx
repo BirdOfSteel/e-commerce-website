@@ -33,7 +33,7 @@ export default function Login() {
 
         try {
             setServerResponseMessage(null);
-            const res = await fetch('http://192.168.1.100:3001/login', {
+            const res = await fetch('https://ecommerce.amir-api.co.uk/login', {
                 method: "POST",
                 credentials: 'include',
                 headers: {

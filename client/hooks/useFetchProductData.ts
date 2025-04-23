@@ -9,12 +9,11 @@ export default function useFetchProductData(endpoint: string) {
     useEffect(() => {
         async function fetchPhoneData() {
             try {
-                const res = await fetch(`http://192.168.1.100:3001/${endpoint}`,{
+                const res = await fetch(`https://ecommerce.amir-api.co.uk/${endpoint}`,{
                     method: 'GET',
                     credentials: 'include'
                 }); // Pi IP address
                 const data = await res.json();
-                console.log(data)
                 
                 setData(data);
             } catch (err) {
