@@ -55,6 +55,7 @@ export default function Login() {
                 router.push('/');
             };
         } catch (err) {
+            console.log(err)
             setServerResponseMessage("Server error: Unable to connect. Please try again later.");
         }
 

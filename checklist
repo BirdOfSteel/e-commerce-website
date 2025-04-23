@@ -3,11 +3,6 @@
 
 
 // make basket animate scale/colour when item added to basket.
-//  maybe add number onto it, and have '9+' display on 10 or more items.
-// remove console.logs
+// remove console.logs and console.errors
 
 // consider rate limiting and returning an error message if possible
-// add item qty to basket
-
-
-// Upload frontend to netlify and backend to raspberry pi

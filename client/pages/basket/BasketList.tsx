@@ -45,6 +45,7 @@ export default function BasketList() {
                     setShoppingBasket([]);
                     setHasCheckedOut(true);                }
             } catch (err) {
+                console.log(err)
                 setServerResponseMessage({
                     message: "Server error: Unable to connect. Please try again later."
                 });
