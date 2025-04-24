@@ -7,7 +7,7 @@ export default function useFetchProductData(endpoint: string) {
     const [ error, setError ] = useState<Error | null>(null);
 
     useEffect(() => {
-        async function fetchPhoneData() {
+        async function fetchProductData() {
             try {
                 const res = await fetch(`https://ecommerce.amir-api.co.uk/${endpoint}`,{
                     method: 'GET',
@@ -23,7 +23,7 @@ export default function useFetchProductData(endpoint: string) {
             }
         }
 
-        fetchPhoneData();
+        fetchProductData();
     }, []);
 
     return { data, isLoading, error };
