@@ -43,7 +43,8 @@ export default function Login() {
             });
             
             const data = await res.json(); 
-
+            console.log(data)
+            console.log(document.cookie)
             if (!res.ok) {
                 setServerResponseMessage(data.message || "Something went wrong");
                 return;
