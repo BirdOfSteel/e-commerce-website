@@ -7,7 +7,7 @@ import { AuthContext } from '../../context/AuthContext';
 export default function Login() {
     const router = useRouter();
     const [ serverResponseMessage, setServerResponseMessage ] = useState(null);
-    const { setUser } = useContext(AuthContext);
+    const { user, setUser } = useContext(AuthContext);
 
     const searchParams = useSearchParams();
 
@@ -39,22 +39,21 @@ export default function Login() {
                 headers: {
                   "Content-Type": "application/json"
                 },
-                body: JSON.stringify(loginForm)
+                body: JSON.stringify({
+                    loginForm: loginForm,
+                    sessionToken: user.sessionToken
+                })
             });
             
-            const data = await res.json(); 
+            const data = await res.json();
             console.log(data)
             console.log(document.cookie)
             if (!res.ok) {
                 setServerResponseMessage(data.message || "Something went wrong");
                 return;
             } else {
-                setServerResponseMessage(data.message)
-                let cookieArray = document.cookie.split('; ');
-                console.log(document)
-                console.log(cookieArray)
-                let userData = cookieArray.find(row => row.startsWith('userinfo=')).replace('userinfo=', '');
-                setUser(JSON.parse(decodeURIComponent(userData)));
+                setServerResponseMessage(data.message);
+                localStorage.setItem('userInfo', data.userInfo);
                 router.push('/');
             };
         } catch (err) {

@@ -45,6 +45,7 @@ export type UserType = {
     email: string;
     name: string;
     profileColour: string;
+    sessionToken: string;
 } | null;
 
 export type AuthContextType = {
