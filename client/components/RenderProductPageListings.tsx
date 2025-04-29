@@ -8,14 +8,13 @@ import 'react-loading-skeleton/dist/skeleton.css';
 export default function RenderProductPageListings({ data, isLoading, error, sortingMethod }: RenderListingsProps) {
     const addToBasket = useAddToBasket();
     const [ productList, setProductList ] = useState(data);
-
-    if (error) return <p>Error: {error.message}</p>
-
+    
     // triggers sorting of product list
     useEffect(() => {
         sortProductList();
     },[sortingMethod, data])
-    
+
+    if (error) return <p>Error: {error.message}</p>
 
     // handles sorting fetched product list data
     function sortProductList() {

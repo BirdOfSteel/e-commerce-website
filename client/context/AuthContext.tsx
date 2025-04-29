@@ -5,7 +5,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ initialUser = null, children }: AuthProviderProps): JSX.Element => {
   const [user, setUser] = useState<UserType>(initialUser);
-
+  
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}

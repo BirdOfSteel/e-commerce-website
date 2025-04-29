@@ -1,3 +1,4 @@
+import { SERVER_URL } from '../../config';
 import { useState } from "react";
 import Layout from '../Layout'
 import Link from "next/link";
@@ -23,7 +24,7 @@ export default function Register() {
 
         try {
             setServerResponseText(null);
-            const res = await fetch('https://ecommerce.amir-api.co.uk/register', {
+            const res = await fetch(`${SERVER_URL}/register`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json"

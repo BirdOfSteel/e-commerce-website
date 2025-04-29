@@ -1,3 +1,4 @@
+import { SERVER_URL } from '../config';
 import { useState, useEffect, useContext } from 'react';
 import Link from "next/link";
 import styles from '../styles/Header.module.css';
@@ -6,14 +7,15 @@ import { useRouter } from 'next/navigation';
 import { ShoppingBasketContext } from '../context/ShoppingBasketProvider';
 
 export default function Header() {
+    
   const { shoppingBasket } = useContext(ShoppingBasketContext);
   const router = useRouter();
   const { user, setUser } = useAuth();
   const [ showProfileMenu, setShowProfileMenu ] = useState<boolean>(false);
-  const [ isBasketBouncing, setIsBasketBouncing ] = useState<boolean>(false);
+  // const [ isBasketBouncing, setIsBasketBouncing ] = useState<boolean>(false);
 
   async function handleLogout() {
-    const res = await fetch('https://ecommerce.amir-api.co.uk/logout', {
+    const res = await fetch(`${SERVER_URL}/logout`, {
       method: 'POST',
       credentials: 'include'
     });
@@ -24,19 +26,19 @@ export default function Header() {
     }
   }
   
-  useEffect(() => {
-    makeBasketBounce();
-  },[shoppingBasket])
+  // useEffect(() => {
+  //   makeBasketBounce();
+  // },[shoppingBasket])
 
-  function makeBasketBounce() {
-    setIsBasketBouncing(false); // remove class first
+  // function makeBasketBounce() {
+  //   setIsBasketBouncing(false); // remove class first
   
-    // Force reflow before re-adding the class
-    requestAnimationFrame(() => {
-      setIsBasketBouncing(true);
-      setTimeout(() => setIsBasketBouncing(false), 1000);
-    });
-  }
+  //   // Force reflow before re-adding the class
+  //   requestAnimationFrame(() => {
+  //     setIsBasketBouncing(true);
+  //     setTimeout(() => setIsBasketBouncing(false), 1000);
+  //   });
+  // }
   
   return (
     <>

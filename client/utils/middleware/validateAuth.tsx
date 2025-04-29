@@ -2,11 +2,12 @@ import redis from '../redis';
 
 export default async function validateAuth(req) {
     const sessionCookie = req.cookies.get('session_token');
-    
+    console.log(sessionCookie)
     // Check if session token exists
     if (!sessionCookie) {
         return { isAuthenticated: false, message: 'You must be logged in to access this page'};
     }
+
 
     try {
         // Validate session token in Redis

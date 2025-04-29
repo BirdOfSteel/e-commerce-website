@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next dev --experimental-https --experimental-https-key ../certs/localhost+2-key.pem --experimental-https-cert ../certs/localhost+2.pem",
     "start": "next start"
   },
   "dependencies": {

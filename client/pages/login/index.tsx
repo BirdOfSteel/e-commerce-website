@@ -1,3 +1,4 @@
+import { SERVER_URL } from '../../config';
 import { useState, useEffect, useContext } from "react";
 import Layout from '../Layout'
 import Link from "next/link";
@@ -33,7 +34,8 @@ export default function Login() {
 
         try {
             setServerResponseMessage(null);
-            const res = await fetch('https://ecommerce.amir-api.co.uk/login', {
+
+            const res = await fetch(`${SERVER_URL}/login`, {
                 method: "POST",
                 credentials: 'include',
                 headers: {
@@ -41,21 +43,27 @@ export default function Login() {
                 },
                 body: JSON.stringify({
                     loginForm: loginForm,
-                    sessionToken: user.sessionToken
+                    sessionToken: user ? user.sessionToken : null
                 })
             });
             
             const data = await res.json();
-            console.log(data)
-            console.log(document.cookie)
+            
             if (!res.ok) {
                 setServerResponseMessage(data.message || "Something went wrong");
                 return;
-            } else {
-                setServerResponseMessage(data.message);
-                localStorage.setItem('userInfo', data.userInfo);
-                router.push('/');
-            };
+            }
+            
+            // extract and set userinfo from cookie so page doesn't need reload
+            let cookieArray = document.cookie.split('; ');
+            console.log(document)
+            console.log(cookieArray)
+            let userData = cookieArray?.find(row => row.startsWith('userinfo=')).replace('userinfo=', '');
+            console.log(userData)
+            setUser(JSON.parse(decodeURIComponent(userData)));
+            setServerResponseMessage(data.message);
+
+            router.push('/');
         } catch (err) {
             console.log(err)
             setServerResponseMessage("Server error: Unable to connect. Please try again later.");

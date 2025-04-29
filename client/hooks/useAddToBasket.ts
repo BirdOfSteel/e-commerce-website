@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import { ShoppingBasketContext } from "../context/ShoppingBasketProvider";
 import { Product } from "../types/types";
-import { BasketObjectType } from "../types/types";
+import { BasketProductObjectType } from "../types/types";
 
 export function useAddToBasket() {
     const { setShoppingBasket } = useContext(ShoppingBasketContext);
 
     const addToBasket = (productObject: Product) => {
-        setShoppingBasket((prevBasket: BasketObjectType[]) => {
+        setShoppingBasket((prevBasket: BasketProductObjectType[]) => {
             // creates array of IDs in shopping basket
             const prevBasketIDs = prevBasket.map((object) => { 
                 return object.id

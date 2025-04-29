@@ -9,7 +9,6 @@ interface AuthValidationResult {
 export async function middleware(req: NextRequest): Promise<NextResponse> {
     const { pathname } = req.nextUrl;
     const response = NextResponse.next();
-    
     if ( // skip calls for static assets
         pathname.startsWith('/_next') || 
         pathname.startsWith('/static') || 

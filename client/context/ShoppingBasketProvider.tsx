@@ -5,14 +5,16 @@ export const ShoppingBasketContext = createContext(null);
 export function ShoppingBasketProvider({ children }) {
     const [ shoppingBasket, setShoppingBasket ] = useState([]);
 
-    useEffect(() => { // for syncing basket context to basket in local storage on first render
-        if (typeof window !== 'undefined') { // checks window to see if we're in browser environment
+    useEffect(() => { // sync shoppingBasket to basket in local storage on first render
+        if (typeof window !== 'undefined') {
             const localStorageBasket = localStorage.getItem('basket');
-            if (localStorageBasket !== 'undefined') { 
+            if (localStorageBasket && localStorageBasket !== 'undefined') {
                 setShoppingBasket(JSON.parse(localStorageBasket));
-            }
+            } else {
+                setShoppingBasket([]);
+            };
         }
-    },[])
+    }, []);
     
     useEffect(() => { // sync basket to local storage on each basket interaction
         localStorage.setItem('basket', JSON.stringify(shoppingBasket));

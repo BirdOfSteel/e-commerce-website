@@ -1,10 +1,12 @@
+import { SERVER_URL } from '../../config';
 import { useContext, useState, useEffect } from 'react';
 import { ShoppingBasketContext } from '../../context/ShoppingBasketProvider';
-import { BasketObjectType, ServerResponse } from '../../types/types';
+import { BasketProductObjectType, ServerResponse } from '../../types/types';
 import getCurrentDate from '../../utils/getCurrentDate';
 import priceNumberToString from '../../utils/priceNumberToString';
 
 export default function BasketList() {
+
     const { shoppingBasket, setShoppingBasket } = useContext(ShoppingBasketContext);
     const [ hasCheckedOut, setHasCheckedOut ] = useState(false);
     const [ serverResponseMessage, setServerResponseMessage ] = useState<ServerResponse | null>(null);
@@ -12,7 +14,7 @@ export default function BasketList() {
     
     useEffect(() => { // on entering basket page, calculates total value
         const basketTotalValue: number = 
-            shoppingBasket.reduce((totalValue: number, basketItem: BasketObjectType) => {
+            shoppingBasket.reduce((totalValue: number, basketItem: BasketProductObjectType) => {
                 return totalValue += basketItem.subtotal;
         },  0);
         setBasketTotal(basketTotalValue);
@@ -21,7 +23,7 @@ export default function BasketList() {
     async function handleCheckout() {
         if (shoppingBasket.length > 0) {
             try {
-                const res = await fetch('https://ecommerce.amir-api.co.uk/add-to-order-history', {
+                const res = await fetch(`${SERVER_URL}/add-to-order-history`, {
                     method: "POST",
                     credentials: "include",
                     headers: {
@@ -31,10 +33,7 @@ export default function BasketList() {
                         timestamp: 
                             getCurrentDate(),
                         total: 
-                            `${basketTotal.toLocaleString('en', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                            })}`,
+                            basketTotal,
                         shoppingBasket: 
                             shoppingBasket
                     })
@@ -53,7 +52,7 @@ export default function BasketList() {
         }
     }
 
-    function updateQuantity(objectInBasket: BasketObjectType, action:string) {
+    function updateQuantity(objectInBasket: BasketProductObjectType, action:string) {
         let newQuantity: number = null;
 
         switch (action) {
@@ -73,7 +72,7 @@ export default function BasketList() {
         const action: string = e.target.id;
 
         let updatedBasket = 
-                prevBasket.map((objectInBasket: BasketObjectType) => {
+                prevBasket.map((objectInBasket: BasketProductObjectType) => {
                     if (objectInBasket.id === productObject.id) {
                         const updatedObjectInBasket = {
                             ...objectInBasket,
@@ -106,7 +105,7 @@ export default function BasketList() {
     
     function generateBasketList() {
 
-        return shoppingBasket.map((basketObject: BasketObjectType, index) => {
+        return shoppingBasket.map((basketObject: BasketProductObjectType) => {
             return (
                 <div 
                     className='max-w-[14rem] mb-[1rem] border-[2px] border-[rgb(0,0,0,0.3)] rounded-md p-[1rem] items-center jusify-center'

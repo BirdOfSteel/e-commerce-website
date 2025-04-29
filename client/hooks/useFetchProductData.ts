@@ -1,3 +1,4 @@
+import { SERVER_URL } from '../config';
 import { useEffect, useState } from "react";
 import { Product } from "../types/types";
 
@@ -9,10 +10,11 @@ export default function useFetchProductData(endpoint: string) {
     useEffect(() => {
         async function fetchProductData() {
             try {
-                const res = await fetch(`https://ecommerce.amir-api.co.uk/${endpoint}`,{
+                const res = await fetch(`${SERVER_URL}/${endpoint}`,{
                     method: 'GET',
                     credentials: 'include'
                 }); // Pi IP address
+                
                 const data = await res.json();
                 
                 setData(data);

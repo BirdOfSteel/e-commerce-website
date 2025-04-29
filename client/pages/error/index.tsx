@@ -1,3 +1,4 @@
+import { SERVER_URL } from '../../config';
 import { useEffect, useState } from 'react';
 import Layout from '../Layout';
 
@@ -7,7 +8,7 @@ export default function Error() {
     useEffect(() => {
         async function pingServer() {
             try {
-                const res = await fetch('https://ecommerce.amir-api.co.uk/', {
+                const res = await fetch(`${SERVER_URL}`, {
                     method: 'GET'
                 });
     

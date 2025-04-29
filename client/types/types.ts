@@ -31,7 +31,7 @@ export type RenderScrollListingsProps = {
 }
 
 // object structure in basket
-export type BasketObjectType = {
+export type BasketProductObjectType = {
     id: string;
     img_src: string;
     name: string;
@@ -75,3 +75,12 @@ export type ServerResponse = {
 export type PagePropsType = {
   userinfo?: UserType;
 }
+
+// Order history
+export type OrderHistory = OrderInstance[] | [];
+
+export type OrderInstance = {
+  shoppingBasket: BasketProductObjectType[];
+  timestamp: string;
+  total: number;
+};

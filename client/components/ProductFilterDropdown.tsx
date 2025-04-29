@@ -21,7 +21,7 @@ export default function ProductFilterDropdown({ sortingMethod, setSortingMethod 
             const isLastInArray = i === sortingMethods.length - 1;
 
             return (
-              <MenuItem>
+              <MenuItem key={i}>
                 <button onClick={() => setSortingMethod(method)}
                   className={`
                     ${isFirstInArray && 'rounded-t-md bg-red'} 

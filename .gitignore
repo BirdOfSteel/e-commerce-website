@@ -1,4 +1,14 @@
 node_modules/
 .next/
-.env.local
+
+# Environment variable
 .env
+.env.local
+.env.production
+.env.development
+
+# Local Netlify folder
+.netlify
+
+# SSL certificates
+/certs/*
