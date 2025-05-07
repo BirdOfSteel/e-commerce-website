@@ -70,8 +70,8 @@ const { Pool } = pg;
 const pool = new Pool({
     user: process.env.POSTGRES_USERNAME,
     password: process.env.POSTGRES_PASSWORD,
-    host: process.env.POSTGRES_HOST_URL,
-    port: process.env.POSTGRES_HOST_PORT,
+    host: process.env.POSTGRES_HOST_IP,
+    port: process.env.POSTGRES_PORT,
     database: process.env.POSTGRES_DB_NAME
 });
 
@@ -130,8 +130,6 @@ app.get('/get-order-history', async (req, res) => {
                 [email]
             );
 
-            const orderHistory = query.rows[0].order_history;
-
             res.send(orderHistory);
         } else {
             console.log(`Error in /get-order-history : ${err.stack || err}`);
@@ -140,6 +138,7 @@ app.get('/get-order-history', async (req, res) => {
             })
         }
     } catch (err) {
+        console.log(`Error in /get-order-history : ${err.stack || err}`);
         return res.status(500).json({
             message: "Internal server error while fetching order history. Please try again later."
         })
@@ -289,7 +288,7 @@ app.post('/register', async (req, res) => { // UPDATE TO USE req.body.loginForm 
         } else {
             const hashedPassword = await bcrypt.hash(req.body.password, parseInt(process.env.BCRYPT_SALT_ROUNDS));
             const profileColour = generateRandomProfileColour();
-
+            
             await pool.query(`
                 INSERT INTO users(email, username, password_hash, profile_colour)
                 VALUES($1,$2,$3,$4)`, 

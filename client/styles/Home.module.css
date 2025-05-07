@@ -35,6 +35,7 @@
         margin-bottom: 50px;
         display: flex;
         flex-direction: column;
+        height: auto;
     }
 
     
@@ -46,13 +47,13 @@
         }
 
         .productScrollList {
-            height: clamp(310px, 17vw, 350px);
+            height: min-content;
             width: 100%;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: row;
-            align-items: start;
+            display: grid;
+            grid-auto-flow: column;
+            align-items: stretch;
             overflow-x: scroll;
             background: inherit;
         }
@@ -60,7 +61,7 @@
             .scrollProductLi {
                 min-height: 140px;
                 height: 100%;
-                max-height: 290px;
+                max-height: 100%;
                 min-width: 180px;
                 width: 180px;
                 display: flex;
