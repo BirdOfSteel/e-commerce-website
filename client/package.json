@@ -8,7 +8,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.2",
     "@upstash/redis": "^1.34.7",
-    "next": "latest",
+    "next": "15.3.6",
     "react": "latest",
     "react-dom": "latest",
     "react-loading-skeleton": "^3.5.0"

@@ -26,7 +26,7 @@ export default function ProductFilterDropdown({ sortingMethod, setSortingMethod 
                   className={`
                     ${isFirstInArray && 'rounded-t-md bg-red'} 
                     ${isLastInArray && 'rounded-b-md rounded-t-none'} 
-                    data-[focus]:bg-[rgb(255,153,0)] bg-[rgb(22,96,255)] h-[40px] bg-[rgb(220,220,220)] block w-full border-[1px] border-[rgb(0,0,0,0.3)]`}
+                    data-[focus]:bg-[rgb(255,153,0)] bg-[rgb(22,96,255)] h-[40px] bg-[rgb(22,96,255)] font-bold block w-full border-[1px] border-[rgb(0,0,0,0.3)]`}
                 >
                   {method}
                 </button>

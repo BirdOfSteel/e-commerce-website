@@ -130,6 +130,8 @@ app.get('/get-order-history', async (req, res) => {
                 [email]
             );
 
+            const orderHistory = query.rows[0].order_history ?? null;
+
             res.send(orderHistory);
         } else {
             console.log(`Error in /get-order-history : ${err.stack || err}`);
